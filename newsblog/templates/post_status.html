@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class="row">
+		{% if status == 'success' %}
+			<h2>Post Sukses!</h2>
+		{% else %}
+			<h2>Post Gagal!</h2>
+			<p>Kemungkinan ada kesalahan input data</p>
+		{% endif %}
+	</div>
+{% endblock %}

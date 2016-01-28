@@ -1,0 +1,33 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Newsblog Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  {% block head %}
+  {% endblock %}
+</head>
+<body>
+<div class="container">
+<div class="navbar navbar-default">
+   <ul class="nav navbar-nav">
+     <li><a href="{% url 'blog:view_index' %}">Home</a></li>
+    <li><a href="#">Tentang Kami</a></li>
+    <li><a href="{% url 'blog:contact' %}">Kontak Kami</a></li>
+	<li class="divider-vertical"></li>
+	<li><a href="{% url 'blog:list_gallery_front' %}">Galeri</a></li>
+  	<li><a href="{% url 'blog:list_post_front' %}">Berita</a></li>
+    {% if user.is_authenticated %}
+      <li><a href="{% url 'blog:dashboard' %}"><b>Dashboard<b></a></li>
+    {% endif %}
+  </ul>
+  </div>
+{% block content %}
+{% endblock %}
+</div>
+</body>
+</html>

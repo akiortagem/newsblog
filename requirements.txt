@@ -1,5 +1,6 @@
 Cheetah==2.4.4
 Django==1.8.7
+Landscape-Client==14.12
 PAM==0.4.2
 Pillow==3.0.0
 PyYAML==3.10

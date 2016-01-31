@@ -1,0 +1,10 @@
+{% load endless %}
+{% paginate galleries %}
+			{% for gallery in galleries %}
+				<div class='col-sm-9 col-md-6 text-center' style='padding-bottom:20px;'>
+					<img src="{{MEDIA_URL}}{{ gallery.images.all.0.image.name }}" style="max-width:480px;">
+					<h4>{{ gallery.title }}</h4>
+				</div>
+			{% endfor %}
+			{% show_more %}
+		</div>

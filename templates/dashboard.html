@@ -1,0 +1,28 @@
+{% extends 'base_admin.html' %}
+{% load tag_addcss %}
+{% load key_value_filter %}
+{% block content %}
+	<h1>Selamat Datang {{ request.user.first_name }}</h1>
+	{% if perms.blog.can_view_message %}
+		<h3 id="inboxNotif">Membaca kotak masuk...</h3>
+	{% endif %}
+{% endblock %}
+{% block additional_content %}
+	{% if perms.blog.can_view_message %}
+	<script>
+		$(document).ready(function(){
+			$.ajax({
+				url:'http://localhost:8080/blog/admin/message/count_unread/',
+				success:function(data){
+					var unreads = JSON.parse(data).unreads;
+					if (unreads > 0){
+						$('#inboxNotif').html('Anda mempunyai <a href="http://localhost:8080/blog/admin/message/">' + unreads + ' pesan</a> belum dibaca!')
+					} else {
+						$('#inboxNotif').html('Anda tidak memiliki pesan baru')
+					}
+				}
+			});
+		});
+	</script>
+	{% endif %}
+{% endblock %}

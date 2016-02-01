@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load tag_addcss %}
+{% load key_value_filter %}
+{% load endless %}
+{% block content %}
+<h2>Gallery</h2>
+<div class="row">
+	{% include page_template %}
+	<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+	<script>$.endlessPaginate({paginateOnScroll:true});</script>
+</div>
+{% endblock %}

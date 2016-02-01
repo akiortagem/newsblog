@@ -1,0 +1,198 @@
+{% extends 'base_admin.html' %}
+{% load tag_addcss %}
+{% load key_value_filter %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+	<h3>Manajemen User</h3>
+	{% if paged_data %}
+<table class="table table-striped table-bordered table-hover table-condensed tablesorter">
+	<tr>
+			<th>Username</th>
+			<th>Alamat Email</th>
+			<th>Nama Depan</th>
+			<th>Nama Belakang</th>
+		<th>Actions</th>
+	</tr>
+	{% for data in paged_data%}
+		<tr>
+				<td>{{ data.username }}</td>
+				<td>{{ data.email }}</td>
+				<td>{{ data.first_name }}</td>
+				<td>{{ data.last_name }}</td>
+			<td id="{{ data.username }}">
+				<a href="#" class="btn btn-info deleteButton" data-toggle="tooltip" data-placement="right" title="delete" id="deleteButton">
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#userFormModal">Buat user baru</button>
+</div>
+<div>
+<center> 
+<ul class="pagination">
+        {% if paged_data.has_previous %}
+                <li> <a href="?page={{ paged_data.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+                <li class="disabled"> <a href=#>&laquo;</a></li>
+        {% endif %}
+
+	{% if paged_data.number > 10 %}
+		<li><a href="?page={{ pages_append.0 }}">1</a></li>
+		<li><a href="?page={{ pages_append.1 }}">...</a></li>
+	{% endif %}
+	{% for page in pages %}
+		{% if page == paged_data.number %}
+                        <li class="active"><a href="?page{{ page }}">{{ page }}</a></li>
+                {% else %}
+                        <li><a href="?page={{ page }}">{{ page }}</a></li>
+                {% endif %}
+	{% endfor %}
+
+	{% if paged_data.number > 10 and paged_data.number < paged_data.paginator.num_pages%}
+		<li><a href="?page={{ pages_append.2 }}">...</a></li>
+	{% elif paged_data.number < paged_data.paginator.num_pages %}
+		<li><a href="?page={{ pages_append.0 }}">...</a></li>
+	{% endif %}
+
+        {% if paged_data.number < paged_data.paginator.num_pages %}
+                <li><a href="?page={{ paged_data.paginator.num_pages }}">{{ paged_data.paginator.num_pages }}</a></li>
+        {% endif %}
+
+        {% if paged_data.has_next %}
+                <li> <a href="?page={{ paged_data.next_page_number }}">&raquo;</a></li>
+        {% else %}
+                <li class="disabled"> <a href=#>&raquo;</a></li>
+        {% endif %}
+</ul>
+</center>
+</div>
+	{% else %}
+	<div class="container">
+  		<h3>Error</h3>
+  		<p>Object {{ view }} is not found</p>
+	</div>
+	{% endif %}
+{% endblock %}
+{% block additional_content%}
+<div id="userDeleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" id="messageHeader">
+        <button type="button" class="close" data-dismiss="modal" id='closeModal'>&times;</button>
+        <h4 class="modal-title">Hapus user : <span id="username"></span></h4>
+      </div>
+      <div class="modal-body" id="deleteModalBody" style="text-align:center;">
+        <div class="row" id="deleteBody" style="text-align:center;padding-top:10px;">
+        </div>
+        <div class="row" style="text-align:center;padding-top:10px;">
+          <button type="button" class="btn btn-success" id='yesDelete'>Ya</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id='noDelete'>Tidak</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" id='closeDeleteModal'>Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="userFormModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" id="messageHeader">
+        <button type="button" class="close" data-dismiss="modal" id='closeModal'>&times;</button>
+        <h4 class="modal-title">Create new user</h4>
+      </div>
+      <div class="modal-body" id="formBody">
+        <div id="alerts">
+        </div>
+        <form action="" method="post" id="userForm">
+        	{% csrf_token %}
+        	<div class="form-group">
+        		{{ form.username|addcss:"form-control" }}
+        	</div>
+        	<div class="form-group">
+        		{{ form.password|addcss:"form-control" }}
+        	</div>
+        	<div class="form-group">
+        		{{ form.email|addcss:"form-control" }}
+        	</div>
+        	<div class="form-group">
+        		{{ form.first_name|addcss:"form-control" }}
+        	</div>
+        	<div class="form-group">
+        		{{ form.last_name|addcss:"form-control" }}
+        	</div>
+        	<input type="submit" class="btn btn-info" value="Submit">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" id='closeModal'>Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+$(document).ready(function (e) {
+  $('.deleteButton').click(function (e) {
+    console.log('clicked')
+    console.log($(this).closest('td').attr('id'));
+    $("#username").html($(this).closest('td').attr('id'));
+    $("#deleteBody").html('Apakah anda yakin akan menghapus user '+ $(this).closest('td').attr('id') +'?');
+    $('#userDeleteModal').modal({backdrop: 'static', keyboard: false}) 
+  });
+  var afterDelete = false;
+  $('#yesDelete').click(function (e) {
+    console.log('clicked')
+    console.log('from modal : ' + $('#username').html());
+    var username = $('#username').html()
+    var ajaxLoader = "{% static 'img/rolling.gif' %}"
+    $("#deleteModalBody").html('<img src='+ ajaxLoader +'>')
+    $('#closeDeleteModal').prop('disabled', true);
+    $.ajax({
+      url:"http://localhost:8080/blog/admin/user_management/user_delete/" + username +"/",
+      success: function(data){
+        var status = JSON.parse(data).user_status;
+        if(status == 'success'){
+          $("#deleteModalBody").html('User '+ username +' berhasil dihapus');
+        } else {
+          $("#deleteModalBody").html('500 Server Error, contact admin');
+        }
+        afterDelete = true;
+        $('#closeDeleteModal').prop('disabled', false);
+      }
+    });
+  });
+  $('#closeDeleteModal').click(function (e){
+    if(afterDelete == true){
+      location.reload();
+    }
+  });
+});
+$('#userForm').submit(function (e) {
+  e.preventDefault();
+  console.log($(this).serialize());
+  $.post("{% url 'blog:user_add' %}", $(this).serialize(), function (data) {
+    var status = JSON.parse(data).user_status;
+    if(status != 'success'){
+      var alert_pn = '<div class="alert alert-danger">' +
+        '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+        '<strong>Ups!</strong> Ada yang salah pada form anda</div>';
+      $('#alerts').html(alert_pn);
+    } else {
+      $('#userFormModal').modal('toggle');
+      location.reload();
+    }
+  });
+});
+</script>
+{% endblock %}

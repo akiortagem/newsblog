@@ -25,6 +25,8 @@ SECRET_KEY = "9#ti*_hqrssich%%3ajh=@sx5$i=9068w&#9peq$_sg@m6xo=+"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+MEDIA_URL = os.path.join(BASE_DIR, '/media/')
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -34,6 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'endless_pagination',
+
+    'blog',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,7 +58,7 @@ ROOT_URLCONF = 'newsblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -60,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
             ],
             'debug': DEBUG,
         },
@@ -115,3 +123,5 @@ STATICFILES_DIRS = (
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+ENDLESS_PAGINATION_PER_PAGE = 5

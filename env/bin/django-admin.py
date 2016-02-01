@@ -1,4 +1,4 @@
-#!/home/vagrant/newsblog-proper/env/bin/python
+#!/home/vagrant/newsblog-proper/newsblog/env/bin/python
 from django.core import management
 
 if __name__ == "__main__":

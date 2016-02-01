@@ -1,4 +1,4 @@
-#!/home/vagrant/newsblog-proper/env/bin/python
+#!/home/vagrant/newsblog-proper/newsblog/env/bin/python
 
 # -*- coding: utf-8 -*-
 import re

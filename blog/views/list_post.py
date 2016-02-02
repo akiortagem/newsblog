@@ -56,9 +56,9 @@ def list_post_front(request):
 		posts = paginator.page(1)
 	except EmptyPage:
 		posts = paginator.page(paginator.num_pages)
-	return jsonizer(posts, paginator)
+	return jsonizer(posts)
 
-def jsonizer(posts, paginator):
+def jsonizer(posts):
 	ajax_return = {
 		'posts':[],
 		'paginator':{}	
@@ -73,8 +73,8 @@ def jsonizer(posts, paginator):
 		}
 		ajax_return['posts'].append(ajax_post)
 	ajax_return['paginator']={
-		'has_next':paginator.has_next(),
-		'next':paginator.next_page_number if paginator.has_next() else None
+		'has_next':posts.has_next(),
+		'next':posts.next_page_number if posts.has_next() else None
 	}
 	return HttpResponse(json.dumps(ajax_return))
 

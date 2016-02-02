@@ -1,10 +1,72 @@
 {% extends 'base.html' %}
 {% load tag_addcss %}
 {% load key_value_filter %}
-{% load endless %}
 {% block content %}
 <h2>Posts</h2>
-{% include page_template %}
-<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-<script>$.endlessPaginate({paginateOnScroll:true});</script>
+<div>
+	<div class="row" id="postContainer">
+	</div>
+	<div class="row" id="ajaxLoader">
+		<img id="ajaxLoading" hidden src="{% static 'img/rolling.gif' %}">
+	</div>
+	<div class="row" id="showMoreDiv" style="text-align:center;">
+		<button type="button" class="btn btn-md btn-info" id='showMore'>Show More</button>
+	</div>
+</div>
+{% endblock %}
+{% block additional_content %}
+<script>
+var next_link = '/blog/posts/get/'
+
+$(document).ready(function (e){
+	get_posts();
+});
+
+$("#showMore").click(function (e){
+	get_posts()
+});
+
+function render_posts(data){
+	var posts = JSON.parse(data).posts
+
+	var post_html = ''
+	for (var i = 0; i < posts.length; i++) {
+		var post = posts[i]
+		post_html += '<div class="row">'
+		post_html +=		'<div class="col-sm-5 col-md-6"><img src="{{ MEDIA_URL }}'+ post.picture +'" class="img-thumbnail" style="max-height: 500px">'
+		post_html +=		'</div>'
+		post_html +=		'<div class="col-sm-5 col-md-6">'
+		post_html +=			'<a href="/blog/view/'+post.slug+'/">'
+		post_html +=			'<h4>'+ post.title +'<br><small>'+ post.posted +'</small></h4>'
+		post_html +=			'</a>'
+		post_html +=			'<p>' + post.body + '...</p>'
+		post_html +=		'</div>'
+		post_html +=	'</div>'
+	}
+	$("#postContainer").append(post_html)
+}
+
+function render_pagination(data){
+	var pagination = JSON.parse(data).paginator
+	if(pagination.has_next){
+		next_link = '/blog/posts/get/?page=' + pagination.next
+		$("#showMoreDiv").show()
+	}
+}
+
+function get_posts(){
+	$("#showMoreDiv").hide()
+	$("#ajaxLoading").show()
+	$.ajax({
+		url:next_link,
+		success:function(data){
+			render_posts(data);
+			render_pagination(data);
+		},
+		complete:function(){
+			$("#ajaxLoading").hide()
+		}
+	});
+}
+</script>
 {% endblock %}

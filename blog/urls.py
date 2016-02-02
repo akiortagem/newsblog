@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
 	url(r'^view/(?P<slug>[-\w]+)/', views.view_post, name='view_post'),
 	url(r'^posts/',views.list_post_front, name='list_post_front'),
+	url(r'^posts/get/',views.endless_post, name='endless_post'),
 	url(r'^contact/',views.insert_contact, name='contact'),
 	url(r'^gallery/',views.list_gallery_front, name='list_gallery_front'),
 	url(r'^admin/message/count_unread',views.count_unreads, name='count_unreads'),

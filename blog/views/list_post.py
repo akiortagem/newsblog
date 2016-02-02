@@ -30,20 +30,10 @@ def count_unreads(request):
 		return HttpResponse(json.dumps({'unreads':unreads}))
 
 
-# def list_post_front(request, page_template='post_pagination.html', template='list_post_front.html'):
-# 	model = Blog
-# 	name = 'Posts'
-# 	context = {
-# 		'posts': model.objects.all(),
-# 		'page_template':page_template,
-# 	}
-# 	if request.is_ajax():
-# 		template = page_template
-# 	return render_to_response(
-# 			template, context, context_instance=RequestContext(request)
-# 		)
+def list_post_front(request, template='list_post_front.html'):
+	return render(request, template)
 
-def list_post_front(request):
+def endless_post(request):
 	model = Blog
 	name = 'Posts'
 	post_all = model.objects.all()

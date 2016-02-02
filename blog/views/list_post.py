@@ -30,18 +30,54 @@ def count_unreads(request):
 		return HttpResponse(json.dumps({'unreads':unreads}))
 
 
-def list_post_front(request, page_template='post_pagination.html', template='list_post_front.html'):
+# def list_post_front(request, page_template='post_pagination.html', template='list_post_front.html'):
+# 	model = Blog
+# 	name = 'Posts'
+# 	context = {
+# 		'posts': model.objects.all(),
+# 		'page_template':page_template,
+# 	}
+# 	if request.is_ajax():
+# 		template = page_template
+# 	return render_to_response(
+# 			template, context, context_instance=RequestContext(request)
+# 		)
+
+def list_post_front(request):
 	model = Blog
 	name = 'Posts'
-	context = {
-		'posts': model.objects.all(),
-		'page_template':page_template,
+	post_all = model.objects.all()
+	limit = 2
+	paginator = Paginator(post_all, limit)
+	page = request.GET.get('page')
+	try:
+		posts = paginator.page(page)
+	except PageNotAnInteger:
+		posts = paginator.page(1)
+	except EmptyPage:
+		posts = paginator.page(paginator.num_pages)
+	return jsonizer(posts, paginator)
+
+def jsonizer(posts, paginator):
+	ajax_return = {
+		'posts':[],
+		'paginator':{}	
 	}
-	if request.is_ajax():
-		template = page_template
-	return render_to_response(
-			template, context, context_instance=RequestContext(request)
-		)
+	for post in posts:
+		ajax_post = {
+			'picture':post.picture,
+			'slug':post.slug,
+			'title':post.title,
+			'posted':post.posted,
+			'body':post.body
+		}
+		ajax_return['posts'].append(ajax_post)
+	ajax_return['paginator']={
+		'has_next':paginator.has_next(),
+		'next':paginator.next_page_number if paginator.has_next() else None
+	}
+	return HttpResponse(json.dumps(ajax_return))
+
 
 def list_gallery_front(request, page_template='gallery_pagination.html', template='list_gallery_front.html'):
 	model = ImageGallery

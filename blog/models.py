@@ -35,6 +35,10 @@ class Blog(models.Model):
         ]
         view_name = 'Blog Post'
 
+    @property
+    def body_shortened(self):
+        return str(self.body)[0:200]
+
 
 class MessageStatus:
     status=(

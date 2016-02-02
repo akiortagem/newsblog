@@ -65,7 +65,7 @@ def jsonizer(posts):
 	}
 	for post in posts:
 		ajax_post = {
-			'picture':post.picture,
+			'picture':post.picture.name,
 			'slug':post.slug,
 			'title':post.title,
 			'posted':post.posted,

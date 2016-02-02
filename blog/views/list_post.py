@@ -68,7 +68,7 @@ def jsonizer(posts):
 			'picture':post.picture.name,
 			'slug':post.slug,
 			'title':post.title,
-			'posted':post.posted,
+			'posted':post.posted.strftime('%d %b %Y %H:%M:%S'),
 			'body':post.body
 		}
 		ajax_return['posts'].append(ajax_post)

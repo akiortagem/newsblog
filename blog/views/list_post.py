@@ -64,7 +64,7 @@ def jsonizer(posts):
 		ajax_return['posts'].append(ajax_post)
 	ajax_return['paginator']={
 		'has_next':posts.has_next(),
-		'next':posts.next_page_number if posts.has_next() else None
+		'next':posts.next_page_number() if posts.has_next() else None
 	}
 	return HttpResponse(json.dumps(ajax_return))
 

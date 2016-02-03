@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load tag_addcss %}
 {% load key_value_filter %}
+{% load staticfiles  %}
 {% block content %}
 <h2>Gallery</h2>
 <div>
@@ -16,7 +17,7 @@
 {% endblock %}
 {% block additional_content %}
 <script>
-var next_link = '/blog/gallery/get/'
+var next_link = '/blog/galleries/get/'
 
 $(document).ready(function (e){
 	get_galleries();
@@ -29,7 +30,7 @@ $("#showMore").click(function (e){
 function render_galleries(data){
 	var galleries = JSON.parse(data).galleries
 
-	var galleries_html = ''
+	var gallery_html = ''
 	for (var i = 0; i < galleries.length; i++) {
 		var gallery = galleries[i]
 		gallery_html += '<div class="row">'

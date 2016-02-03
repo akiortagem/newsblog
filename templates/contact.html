@@ -34,7 +34,7 @@
 </form>
 <script>
 $('#contactForm').submit(function(e){
-    $.post('http://localhost:8080/blog/contact/', $(this).serialize(), function(data){
+    $.post('/blog/contact/', $(this).serialize(), function(data){
     	var stats = JSON.parse(data).form_status;
     	if(stats == 'success'){
     		var alert_pn = '<div class="alert alert-success">' +

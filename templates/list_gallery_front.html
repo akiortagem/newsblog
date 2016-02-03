@@ -33,10 +33,10 @@ function render_galleries(data){
 	var gallery_html = ''
 	for (var i = 0; i < galleries.length; i++) {
 		var gallery = galleries[i]
-		gallery_html += '<div class="row">'
+		gallery_html += '<div class="row" style="text-align:center">'
 		gallery_html +=		'<div class="col-sm-9 col-md-6 text-center" style="padding-bottom:20px;"">'
-		gallery_html +=			'<a href="/blog/view/'+gallery.id+'/">'
 		gallery_html +=			'<img src="{{MEDIA_URL}}'+ gallery.first_pic +'" style="max-width:480px;">'
+		gallery_html +=			'<a href="/blog/gallery/view/'+gallery.id+'/">'
 		gallery_html +=			'<h4>'+gallery.title+'</h4>'
 		gallery_html +=			'</a>'
 		gallery_html +=		'</div>'

@@ -159,7 +159,7 @@ $(document).ready(function (e) {
     $("#deleteModalBody").html('<img src='+ ajaxLoader +'>')
     $('#closeDeleteModal').prop('disabled', true);
     $.ajax({
-      url:"http://localhost:8080/blog/admin/user_management/user_delete/" + username +"/",
+      url:"/blog/admin/user_management/user_delete/" + username +"/",
       success: function(data){
         var status = JSON.parse(data).user_status;
         if(status == 'success'){

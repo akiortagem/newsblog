@@ -46,9 +46,9 @@ def endless_post(request):
 		posts = paginator.page(1)
 	except EmptyPage:
 		posts = paginator.page(paginator.num_pages)
-	return jsonizer(posts)
+	return jsonizer_post(posts)
 
-def jsonizer(posts):
+def jsonizer_post(posts):
 	ajax_return = {
 		'posts':[],
 		'paginator':{}	
@@ -70,18 +70,39 @@ def jsonizer(posts):
 
 
 def list_gallery_front(request, page_template='gallery_pagination.html', template='list_gallery_front.html'):
-	model = ImageGallery
-	name = 'ImageGallery'
-	context = {
-		'galleries': model.objects.all(),
-		'page_template': page_template
-	}
-	if request.is_ajax():
-		template = page_template
+	return render(request, template)
 
-	return render_to_response(
-			template, context, context_instance=RequestContext(request)
-		)
+def endless_gallery(request):
+	model = ImageGallery
+	gallery_all = model.objects.all()
+	limit = 2
+	paginator = Paginator(gallery_all, limit)
+	page = request.GET.get('page')
+	try:
+		galleries = paginator.page(page)
+	except PageNotAnInteger:
+		galleries = paginator.page(1)
+	except EmptyPage:
+		galleries = paginator.page(paginator.num_pages)
+	return jsonizer_gallery(galleries)
+
+def jsonizer_gallery(galleries):
+	ajax_return = {
+		'galleries':[],
+		'paginator':{}	
+	}
+	for gallery in galleries:
+		ajax_gallery = {
+			'first_pic':gallery.images.first().image.name,
+			'id':gallery.id,
+			'title':gallery.title,
+		}
+		ajax_return['galleries'].append(ajax_gallery)
+	ajax_return['paginator']={
+		'has_next':galleries.has_next(),
+		'next':galleries.next_page_number() if galleries.has_next() else None
+	}
+	return HttpResponse(json.dumps(ajax_return))
 
 def get_render(request, model, name, template='list_post.html'):
 	field_names = model.ViewMeta.table_columns

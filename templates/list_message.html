@@ -109,7 +109,7 @@
 				$(this).css('font-weight', 'normal');
 			}
 			var messageDate = $(this).find("#messageDate").html();
-			var url = 'http://localhost:8080/blog/admin/message/' + id;
+			var url = '/blog/admin/message/' + id;
 			console.log('getting ' + url); 
 			$.ajax({
 				url:url,

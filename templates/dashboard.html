@@ -12,11 +12,11 @@
 	<script>
 		$(document).ready(function(){
 			$.ajax({
-				url:'http://localhost:8080/blog/admin/message/count_unread/',
+				url:'/blog/admin/message/count_unread/',
 				success:function(data){
 					var unreads = JSON.parse(data).unreads;
 					if (unreads > 0){
-						$('#inboxNotif').html('Anda mempunyai <a href="http://localhost:8080/blog/admin/message/">' + unreads + ' pesan</a> belum dibaca!')
+						$('#inboxNotif').html('Anda mempunyai <a href="/blog/admin/message/">' + unreads + ' pesan</a> belum dibaca!')
 					} else {
 						$('#inboxNotif').html('Anda tidak memiliki pesan baru')
 					}

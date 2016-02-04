@@ -97,6 +97,13 @@ class ImageGallery(models.Model):
         ordering = ['-id']
         verbose_name = 'Image Gallery'
 
+    class ViewMeta:
+        table_columns = [
+            'title',
+            'created_by',
+            'date',
+        ]
+
     title = models.CharField(max_length=100, unique=True)
     images = models.ManyToManyField(
         Image

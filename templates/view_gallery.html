@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load tag_addcss %}
+{% load key_value_filter %}
+{% load staticfiles  %}
+{% block content %}
+<h2>Gallery : {{ gallery.title }}</h2>
+<div>
+	<div class="row" id="imageContainer" style="text-align:center;">
+	</div>
+	<div class="row" id="ajaxLoader" style="text-align:center;">
+		<img id="ajaxLoading" hidden src="{% static 'img/rolling.gif' %}">
+	</div>
+	<div class="row" id="showMoreDiv" style="text-align:center;">
+		<button type="button" class="btn btn-md btn-info" id='showMore'>Show More</button>
+	</div>
+</div>
+{% endblock %}
+{% block additional_content %}
+<!-- Modal content-->
+<div id="imageModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" id="imageHeader">
+        <button type="button" class="close" data-dismiss="modal" id='closeModal'>&times;</button>
+        <h4 class="modal-title" id="imageTitle"></h4>
+      </div>
+      <div class="modal-body" id="imageBody" style="text-align:center;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id='closeModal'>Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+var galleryId = {{ gallery.id }}
+var next_link = '/blog/galleries/view/'+ galleryId +'/get/'
+
+$(document).ready(function (e){
+	get_images();
+});
+
+$("#showMore").click(function (e){
+	get_images()
+});
+
+$("#imageContainer").on('click', "#imageDiv", function(){
+	var image = $(this).attr('data-image')
+	$('#imageTitle').html($(this).attr('data-title'))
+	$('#imageBody').html('<img src="{{MEDIA_URL}}'+ image +'" style="max-width:480px;">')
+	$('#imageModel').modal('show');
+});
+
+function render_images(data){
+	var images = JSON.parse(data).images
+
+	var image_html = ''
+	for (var i = 0; i < images.length; i++) {
+		var image = images[i]
+		image_html +=		'<div class="col-xs-2" style="cursor:pointer" id="imageDiv" data-queue="'image.queue'" data-image="'+ image.image +'" data-title="'+ image.title +'">'
+		image_html +=			'<img src="{{MEDIA_URL}}'+ image.image +'" style="max-width:100px;">'
+		image_html +=			'<h4>'+image.title+'</h4>'
+		image_html +=		'</div>'
+	}
+	$("#imageContainer").append(image_html)
+}
+
+function render_pagination(data){
+	var pagination = JSON.parse(data).paginator
+	if(pagination.has_next){
+		next_link = '/blog/galleries/view/'+ galleryId +'/get/' + pagination.next
+		$("#showMoreDiv").show()
+	}
+}
+
+function get_images(){
+	$("#showMoreDiv").hide()
+	$("#ajaxLoading").show()
+	$.ajax({
+		url:next_link,
+		success:function(data){
+			render_images(data);
+			render_pagination(data);
+		},
+		complete:function(){
+			$("#ajaxLoading").hide()
+		}
+	});
+}
+</script>
+{% endblock %}

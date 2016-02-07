@@ -103,6 +103,8 @@ class ImageGallery(models.Model):
             'created_by',
             'date',
         ]
+	
+	view_name = 'Image Gallery'
 
     title = models.CharField(max_length=100, unique=True)
     images = models.ManyToManyField(

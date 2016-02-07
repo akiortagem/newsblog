@@ -22,7 +22,7 @@
 				<a href="/blog/galleries/view/{{ data.id }}" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="view post">
 					<span class="glyphicon glyphicon-eye-open"></span>
 				</a>
-				<a href="{% url 'blog:edit_post' slug=data.slug %}" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="edit post">
+				<a href="/blog/admin/gallery/edit/{{ data.id }}" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="edit post">
 					<span class="glyphicon glyphicon-edit"></span>
 				</a>
 				<a href="#" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="delete">

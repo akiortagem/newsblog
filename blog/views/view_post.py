@@ -58,7 +58,7 @@ def images_jsonizer(images):
 	queue = 1
 	for image in images:
 		ajax_image = {
-			'image':image.name,
+			'image':image.image.name,
 			'title':image.title,
 			'caption':image.caption,
 			'queue':queue

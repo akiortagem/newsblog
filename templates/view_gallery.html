@@ -4,6 +4,7 @@
 {% load staticfiles  %}
 {% block content %}
 <h2>Gallery : {{ gallery.title }}</h2>
+<br>
 <div>
 	<div class="row" id="imageContainer" style="text-align:center;">
 	</div>
@@ -47,11 +48,12 @@ $("#showMore").click(function (e){
 	get_images()
 });
 
-$("#imageContainer").on('click', "#imageDiv", function(){
+$("#imageContainer").on('click', ".imageDiv", function(){
+	console.log('clicked')
 	var image = $(this).attr('data-image')
 	$('#imageTitle').html($(this).attr('data-title'))
 	$('#imageBody').html('<img src="{{MEDIA_URL}}'+ image +'" style="max-width:480px;">')
-	$('#imageModel').modal('show');
+	$('#imageModal').modal('show');
 });
 
 function render_images(data){
@@ -60,7 +62,7 @@ function render_images(data){
 	var image_html = ''
 	for (var i = 0; i < images.length; i++) {
 		var image = images[i]
-		image_html +=		'<div class="col-xs-2" style="cursor:pointer" id="imageDiv" data-queue="'image.queue'" data-image="'+ image.image +'" data-title="'+ image.title +'">'
+		image_html +=		'<div class="col-xs-2 imageDiv" style="cursor:pointer" data-queue="'+image.queue+'" data-image="'+ image.image +'" data-title="'+ image.title +'">'
 		image_html +=			'<img src="{{MEDIA_URL}}'+ image.image +'" style="max-width:100px;">'
 		image_html +=			'<h4>'+image.title+'</h4>'
 		image_html +=		'</div>'
@@ -79,6 +81,7 @@ function render_pagination(data){
 function get_images(){
 	$("#showMoreDiv").hide()
 	$("#ajaxLoading").show()
+	console.log('get using '+ next_link)
 	$.ajax({
 		url:next_link,
 		success:function(data){

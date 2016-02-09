@@ -29,5 +29,4 @@ urlpatterns = [
 	url(r'^admin/gallery/new/', views.new_gallery, name='new_gallery'),
 	url(r'^admin/gallery/list/', views.list_gallery, name='list_gallery'),
 	url(r'^admin/dash/', views.dashboard, name='dashboard'),
-   	url(r'^', views.index, name='view_index'),
 ]

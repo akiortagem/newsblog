@@ -130,6 +130,8 @@ function get_image(queue){
 
 function render_image(queue, image){
 	$('#imageTitle').html($(this).attr('data-title'))
+	var prev_queue = parseInt(queue) - 1
+	var next_queue = parseInt(queue) + 1
 	var previous_link = '<span class="glyphicon glyphicon-chevron-left imageNextPrev" style="cursor:pointer" data-queue="'+ queue - 1 +'">'
 	var next_link = '<span class="glyphicon glyphicon-chevron-right imageNextPrev" style="cursor:pointer" data-queue="'+ queue + 1 +'">'
 	var previous_html = (queue > 1) ? previous_html : ''

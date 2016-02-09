@@ -33,7 +33,7 @@ def view_message(request, id):
 def view_gallery(request, gallery_id):
 	model = ImageGallery
 	gallery = model.objects.get(id=gallery_id)
-	gallery_num_images = len(gallery.images)
+	gallery_num_images = len(gallery.images.all())
 	return render(request, 'view_gallery.html', {'gallery':gallery, 'gallery_num_images':gallery_num_images})
 
 def endless_images(request, gallery_id):
@@ -77,4 +77,4 @@ def get_image(request, gallery_id, image_queue):
 	gallery = ImageGallery.objects.get(id=gallery_id)
 	images = gallery.images.order_by('-date')
 	image = images[image_queue]
-	return = HttpResponse(json.dumps({'image':image.image.name}))
+	return  HttpResponse(json.dumps({'image':image.image.name}))

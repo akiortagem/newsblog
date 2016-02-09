@@ -62,12 +62,7 @@ $("#imageContainer").on('click', ".imageDiv", function(){
 	$('#imageModal').modal('show');
 });
 
-$("#imageContainer").on('click', '.imageNextPrev', function(){
-	var queue = $(this).attr('data-queue')
-
-});
-
-$("#imageModal").on('click', "#imageNext", function(){
+$("#modalImageContainer").on('click', ".imageNextPrev", function(){
 	console.log('clicked')
 	var queue = $(this).attr('data-queue')
 	get_image(queue)
@@ -113,9 +108,9 @@ function get_images(){
 
 function get_image(queue){
 	$("#ajaxLoadingModal").show()
-	$("#imageContainer").hide()
+	$("#modalImageContainer").hide()
 	console.log('getting image')
-	var link = '/blog/galleries/view/'+ galleryId +'/image/' + queue
+	var link = '/blog/galleries/view/'+ galleryId +'/get_image/' + queue + '/'
 	$.ajax({
 		url:link,
 		success:function(data){
@@ -135,7 +130,7 @@ function render_image(queue, image){
 	var previous_html = (queue > 1) ? previous_html : ''
 	var next_html = (queue <= galleryNumImages) ? next_link : ''
 	$('#modalImageContainer').html(previous_html + '<img src="{{MEDIA_URL}}'+ image +'" style="max-width:480px;">' + next_html)
-	$('#imageContainer').show()
+	$('#modalImageContainer').show()
 }
 </script>
 {% endblock %}

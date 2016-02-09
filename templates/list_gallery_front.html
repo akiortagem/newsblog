@@ -35,7 +35,7 @@ function render_galleries(data){
 		var gallery = galleries[i]
 		gallery_html +=		'<div class="col-sm-9 col-md-6 text-center" style="padding-bottom:20px;"">'
 		gallery_html +=			'<img src="{{MEDIA_URL}}'+ gallery.first_pic +'" style="max-width:480px;">'
-		gallery_html +=			'<a href="/blog/gallery/view/'+gallery.id+'/">'
+		gallery_html +=			'<a href="/blog/galleries/view/'+gallery.id+'/">'
 		gallery_html +=			'<h4>'+gallery.title+'</h4>'
 		gallery_html +=			'</a>'
 		gallery_html +=		'</div>'

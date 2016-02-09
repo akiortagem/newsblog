@@ -33,7 +33,8 @@ def view_message(request, id):
 def view_gallery(request, gallery_id):
 	model = ImageGallery
 	gallery = model.objects.get(id=gallery_id)
-	return render(request, 'view_gallery.html', {'gallery':gallery})
+	gallery_num_images = len(gallery.images)
+	return render(request, 'view_gallery.html', {'gallery':gallery, 'gallery_num_images':gallery_num_images})
 
 def endless_images(request, gallery_id):
 	model = ImageGallery
@@ -70,3 +71,10 @@ def images_jsonizer(images):
 		'next':images.next_page_number() if images.has_next() else None
 	}
 	return HttpResponse(json.dumps(ajax_return))
+
+def get_image(request, gallery_id, image_queue):
+	image_queue = int(image_queue) - 1
+	gallery = ImageGallery.objects.get(id=gallery_id)
+	images = gallery.images.order_by('-date')
+	image = images[image_queue]
+	return = HttpResponse(json.dumps({'image':image.image.name}))

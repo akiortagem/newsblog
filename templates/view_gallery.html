@@ -129,8 +129,8 @@ function render_image(queue, image){
 	var next_queue = parseInt(queue) + 1
 	var previous_link = '<span class="glyphicon glyphicon-chevron-left imageNextPrev" style="cursor:pointer" data-queue="'+ prev_queue +'">'
 	var next_link = '<span class="glyphicon glyphicon-chevron-right imageNextPrev" style="cursor:pointer" data-queue="'+ next_queue +'">'
-	var previous_html = (queue > 1) ? previous_html : ''
-	var next_html = (queue <= galleryNumImages) ? next_link : ''
+	var previous_html = (queue > 1) ? previous_link : ''
+	var next_html = (next_queue <= galleryNumImages) ? next_link : ''
 	$('#modalImageContainer').html(previous_html + '<img src="{{MEDIA_URL}}'+ image +'" style="max-width:480px;">' + next_html)
 	$('#modalImageContainer').show()
 }

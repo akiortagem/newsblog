@@ -7,6 +7,7 @@ urlpatterns = [
 	url(r'^posts/',views.list_post_front, name='list_post_front'),
 	url(r'^contact/',views.insert_contact, name='contact'),
 	url(r'^galleries/get/',views.endless_gallery, name='endless_gallery'),
+	url(r'^galleries/view/(?P<gallery_id>[-\w]+)/get_image/(?P<image_queue>[-\w]+)/',views.get_image, name='get_image'),
 	url(r'^galleries/view/(?P<gallery_id>[-\w]+)/get/',views.endless_images, name='endless_images'),
 	url(r'^galleries/view/(?P<gallery_id>[-\w]+)/',views.view_gallery, name='view_gallery'),
 	url(r'^galleries/',views.list_gallery_front, name='list_gallery_front'),

@@ -59,6 +59,8 @@ def user_add(request):
 			if formData.is_valid():
 				submitted = formData.save()
 				# submitted.groups.add(group)
+				group = Group.objects.get(id=request.POST.get('groups'))
+				submitted.groups.add(group)
 				submitted.save()
 				return HttpResponse(json.dumps({'user_status':'success'}))
 			else:

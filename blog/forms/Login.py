@@ -14,7 +14,7 @@ class UserForm(forms.ModelForm):
 	last_name = forms.CharField(label='Last Name', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Nama Belakang'}))
 	email = forms.CharField(label='Last Name', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Alamat Email'}))
 	# groups = forms.ModelMultipleChoiceField(widget=FilteredSelectMultiple("Groups", is_stacked=False), queryset=Group.objects.all())
-	groups = forms.ModelChoiceField(Group.objects.all(), widget=Select)
+	groups = forms.ModelChoiceField(Group.objects.all(), widget=forms.Select)
 
 	class Meta:
 		model = User

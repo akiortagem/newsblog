@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, HttpResponse
 from django.db.models import Q
 
-from ..forms import LoginForm, ChangePasswordForm, UserForm
+from ..forms import LoginForm, ChangePasswordForm, UserForm, SearchForm
 from . import dashboard
 from . import index
 
@@ -98,13 +98,22 @@ def user_management(request):
 	if is_superuser:
 		model = User
 		name = 'User'
-		form = UserForm
-		return get_render(request, model, name, form, template='list_user.html')
+		form = UserForm(request.GET)
+		search_form = SearchForm
+		return get_render(request, model, name, form, search_form, template='list_user.html')
 	else:
 		return HttpResponse(status=403)
 
-def get_render(request, model, name, form, template='list_post.html'):
+def get_render(request, model, name, form, search_form, template='list_post.html'):
 	data_all = model.objects.filter(~Q(username='admin'))
+	param={}
+	if search_form.is_valid():
+		data = search_form
+		param['groups__name'] = data.get('group') if data.get('group') else None
+		param['username'] = data.get('username') if data.get('username') else None
+
+	if param:
+		data_all.model.objects.filter(**param)
 	limit = 10
 	paginator = Paginator(data_all, limit)
 	page = request.GET.get('page')

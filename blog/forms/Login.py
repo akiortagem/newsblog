@@ -20,7 +20,7 @@ class UserForm(forms.ModelForm):
 		model = User
 		fields = ['username', 'password', 'first_name', 'last_name', 'email', 'groups']
 
-class SearchForm(forms.ModelForm):
+class SearchForm(forms.Form):
 	role = forms.ModelChoiceField(Group.objects.all(), widget=forms.Select)
 	username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Username'}))
 

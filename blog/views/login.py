@@ -57,11 +57,18 @@ def user_add(request):
 		if request.method == 'POST':
 			formData = form(request.POST)
 			if formData.is_valid():
-				submitted = formData.save()
+				# submitted = formData.save()
+				# # submitted.groups.add(group)
+				# group = Group.objects.get(id=request.POST.get('groups'))
 				# submitted.groups.add(group)
+				# submitted.save()
+				user = User(username=request.POST.get('username'))
+				user.set_password(request.POST.get('password'))
+				user.first_name = request.POST.get('first_name')
+				user.last_name = request.POST.get('last_name')
 				group = Group.objects.get(id=request.POST.get('groups'))
-				submitted.groups.add(group)
-				submitted.save()
+				user.groups.add(group)
+				user.save()
 				return HttpResponse(json.dumps({'user_status':'success'}))
 			else:
 				return HttpResponse(json.dumps({'user_status':'failed'}))

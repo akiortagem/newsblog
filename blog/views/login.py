@@ -98,8 +98,8 @@ def user_management(request):
 	if is_superuser:
 		model = User
 		name = 'User'
-		form = UserForm(request.GET)
-		search_form = SearchForm
+		form = UserForm
+		search_form = SearchForm(request.GET)
 		return get_render(request, model, name, form, search_form, template='list_user.html')
 	else:
 		return HttpResponse(status=403)

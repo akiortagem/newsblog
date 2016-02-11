@@ -11,3 +11,13 @@ def is_superuser(user):
       return False
   else :
     return False
+
+@register.filter(name='is_superauthor')
+def is_superauthor(user):
+  if isinstance(user, User):
+    if user.groups.filter(name='superauthor').exists():
+      return True
+    else:
+      return False
+  else :
+    return False

@@ -67,6 +67,7 @@ def user_add(request):
 				user.first_name = request.POST.get('first_name')
 				user.last_name = request.POST.get('last_name')
 				group = Group.objects.get(id=request.POST.get('groups'))
+				user.save()
 				user.groups.add(group)
 				user.save()
 				return HttpResponse(json.dumps({'user_status':'success'}))

@@ -51,7 +51,7 @@ def change_password(request):
 
 @login_required(login_url='/blog/admin/login/')
 def user_add(request):
-	is_superuser = request.user.groups.filter(name='superuser').exists()
+	is_superuser = request.user.groups.filter(name='superauthor').exists()
 	if is_superuser:
 		form = UserForm
 		group = Group.objects.get(name='Authors')
@@ -67,11 +67,11 @@ def user_add(request):
 		else:
 			return HttpResponse(json.dumps({'user_status':'only accepts POST'}))
 	else:
-		return HttpResponse(json.dumps({'user_status':'not superuser'}))
+		return HttpResponse(status=403)
 
 @login_required(login_url='/blog/admin/login/')
 def user_delete(request, username):
-	is_superuser = request.user.groups.filter(name='superuser').exists()
+	is_superuser = request.user.groups.filter(name='superauthor').exists()
 	if is_superuser:
 		try:
 			user = User.objects.get(username=username)
@@ -80,17 +80,19 @@ def user_delete(request, username):
 		except:
 			return HttpResponse(json.dumps({'user_status':'failed'}))
 	else:
-		return HttpResponse(json.dumps({'user_status':'not superuser'}))
+		return HttpResponse(status=403)
 
 
 @login_required(login_url='/blog/admin/login/')
 def user_management(request):
-	is_superuser = request.user.groups.filter(name='superuser').exists()
+	is_superuser = request.user.groups.filter(name='superauthor').exists()
 	if is_superuser:
 		model = User
 		name = 'User'
 		form = UserForm
 		return get_render(request, model, name, form, template='list_user.html')
+	else:
+		return HttpResponse(status=403)
 
 def get_render(request, model, name, form, template='list_post.html'):
 	data_all = model.objects.filter(~Q(username='admin'))

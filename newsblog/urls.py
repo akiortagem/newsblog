@@ -9,7 +9,6 @@ urlpatterns = [
     # url(r'^$', 'newsblog.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^$', index, name='home'),
-    url(r'^admin/jsi18n/$', 'django.views.i18n.javascript_catalog'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^blog/',include(blog_urls, namespace='blog')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -19,6 +19,9 @@ class UserForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ['username', 'password', 'first_name', 'last_name', 'email', 'groups']
+	class Media:
+		css = {'all': ('/static/admin/css/widgets.css',),}
+		js = ('/admin/jsi18n',)
 
 class ChangePasswordForm(forms.Form):
 	new_password = forms.CharField(label='Password', max_length=100, 

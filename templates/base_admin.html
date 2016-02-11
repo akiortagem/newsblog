@@ -36,7 +36,7 @@
                 <li>
                     <a href="{% url 'blog:change_password' %}">Ganti Password</a>
                 </li>
-                {% if user|is_superuser %}
+                {% if user|is_superauthor %}
                 <li>
                     <a href="{% url 'blog:user_management' %}">Manajemen User</a>
                 </li>

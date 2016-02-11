@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Groups
 from django import forms
 
 class LoginForm(forms.Form):
@@ -12,10 +12,11 @@ class UserForm(forms.ModelForm):
 	first_name = forms.CharField(label='First Name', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Nama Depan'}))
 	last_name = forms.CharField(label='Last Name', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Nama Belakang'}))
 	email = forms.CharField(label='Last Name', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Alamat Email'}))
+	groups = forms.ModelChoiceField(Groups.objects.all(), widget=forms.Select)
 
 	class Meta:
 		model = User
-		fields = ['username', 'password', 'first_name', 'last_name', 'email']
+		fields = ['username', 'password', 'first_name', 'last_name', 'email', 'groups']
 
 class ChangePasswordForm(forms.Form):
 	new_password = forms.CharField(label='Password', max_length=100, 

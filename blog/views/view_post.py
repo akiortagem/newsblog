@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse,
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,6 +29,19 @@ def view_message(request, id):
 			'message':data.message
 			}))
 	return HttpResponse(json.dumps({'message':'invalid user'}))
+
+@login_required(login_url='/blog/admin/login/')\
+def delete_message(request, id):
+	if request.user.has_perm('blog.can_delete_message'):
+		model = Message
+		try:
+			data = model.objects.get(id=id)
+			data.delete()
+			return HttpResponse(json.dumps({'delete_status':'success'}))
+		except:
+			return HttpResponse(json.dumps({'delete_status':'failed'}))
+	else:
+		return HttpResponse(status=403)
 
 def view_gallery(request, gallery_id):
 	model = ImageGallery

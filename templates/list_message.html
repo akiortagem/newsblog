@@ -10,6 +10,7 @@
 		{% for field in fields %}
 			<th>{{ field|title }}</th>
 		{% endfor %}
+			<th>Action</th>
 			<th style="display:none;">
 				id
 			</th>
@@ -24,14 +25,16 @@
 				<td>{{ data.email }}</td>
 				<td>{{ data.subject }}</td>
 				<td id="messageDate">{{ data.date }}</td>
+				<td>
+				<a href="#" class="btn btn-info deleteButton" data-toggle="tooltip" data-placement="right" title="delete" id="deleteButton" data-message-id="{{ data.id }}" data-message-from="{{ data.name }}">
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
+				</td>
 				<td style="display:none;" class="messageId">{{ data.id }}</td>
 				<td style="display:none;" class="messageStatus">{{ data.status }}</td>
 			</tr>
 	{% endfor %}
 </table>
-	     <a href="{% url 'blog:new_post' %}" class="btn btn-info">
-         	<span class="glyphicon glyphicon-plus"></span> Create New {{ Name }}
-        </a>
 </div>
 <div>
 <center> 
@@ -100,8 +103,58 @@
 
   </div>
 </div>
+<div id="messageDeleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" id="messageHeader">
+        <button type="button" class="close" data-dismiss="modal" id='closeModal'>&times;</button>
+        <h4 class="modal-title">Hapus pesan dari : <span id="from"></span></h4>
+      </div>
+      <div class="modal-body" id="deleteModalBody" style="text-align:center;">
+        <div class="row" id="deleteBody" style="text-align:center;padding-top:10px;">
+        </div>
+        <div class="row" style="text-align:center;padding-top:10px;">
+          <button type="button" class="btn btn-success" id='yesDelete'>Ya</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id='noDelete'>Tidak</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" id='closeDeleteModal'>Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function() {
+		$("#deleteButton").click(function(){
+			var messageId = $(this).attr('data-message-id');
+			var from = $(this).attr('data-message-from');
+			$("#from").html(from)
+			$("#deleteBody").html('Apakah anda yakin mau menghapus pesan ini?')
+			$("#yesDelete").attr('data-message-id',messageId)
+			$("#messageDeleteModal").modal({backdrop: 'static', keyboard: false})
+		});
+		$("#yesDelete").click(function(){
+			var messageId = $(this).attr('data-message-id');
+			var ajaxLoader = "{% static 'img/rolling.gif' %}"
+		    $("#deleteModalBody").html('<img src='+ ajaxLoader +'>')
+		    $('#closeDeleteModal').prop('disabled', true);
+		    $.ajax({
+		    	url:'/blog/admin/message/delete/' + messageId + '/',
+		    	success:function(response){
+		    		var status = JSON.parse(response).delete_status;
+		    		if(status == 'success'){
+		    			location.reload();
+		    		} else {
+		    			$("#deleteModalBody").html('500 Server Error, contact admin');
+		    		}
+		    	}
+		    })
+		});
 		$('#messageTable #clickable').click(function(){
 			var id = $(this).find(".messageId").html();
 			console.log($(this).css('font-weight'))

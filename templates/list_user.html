@@ -9,10 +9,14 @@
 <div class="container">
 	<h3>Manajemen User</h3>
 	{% if paged_data %}
-  <form action="" method="get" id="searchForm">
+  <form action="" method="get" id="searchForm" class="form-inline">
     {% csrf_token %}
-    {{ search_form.role|addcss:"form-control" }}
-    {{ search_form.username|addcss:"form-control" }}
+    <div class="form-group">
+      {{ search_form.role|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+      {{ search_form.username|addcss:"form-control" }}
+    </div>
     <input type="submit" class="btn btn-info" value="Search">
   </form>
 <table class="table table-striped table-bordered table-hover table-condensed tablesorter">

@@ -109,8 +109,10 @@ def get_render(request, model, name, form, search_form, template='list_post.html
 	param={}
 	if search_form.is_valid():
 		data = request.GET
-		param['groups__id'] = data.get('role') if data.get('role') else None
-		param['username'] = data.get('username') if data.get('username') else None
+		if data.get('role'):
+			param['groups__id'] = data.get('role')
+		if data.get('username'):
+			param['username'] = data.get('username')
 
 	if param:
 		data_all = data_all.filter(**param)

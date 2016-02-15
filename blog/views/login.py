@@ -113,7 +113,7 @@ def get_render(request, model, name, form, search_form, template='list_post.html
 		param['username'] = data.get('username') if data.get('username') else None
 
 	if param:
-		data_all.model.objects.filter(**param)
+		data_all = data_all.filter(**param)
 		# return HttpResponse(json.dumps(param))
 	limit = 10
 	paginator = Paginator(data_all, limit)

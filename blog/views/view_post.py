@@ -30,7 +30,7 @@ def view_message(request, id):
 			}))
 	return HttpResponse(json.dumps({'message':'invalid user'}))
 
-@login_required(login_url='/blog/admin/login/')\
+@login_required(login_url='/blog/admin/login/')
 def delete_message(request, id):
 	if request.user.has_perm('blog.can_delete_message'):
 		model = Message

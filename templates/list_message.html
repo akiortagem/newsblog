@@ -140,7 +140,7 @@
 		});
 		$("#yesDelete").click(function(){
 			var messageId = $(this).attr('data-message-id');
-			var ajaxLoader = "{% static 'img/rolling.gif' %}"
+			var ajaxLoader = "/static/img/rolling.gif"
 		    $("#deleteModalBody").html('<img src='+ ajaxLoader +'>')
 		    $('#closeDeleteModal').prop('disabled', true);
 		    $.ajax({

@@ -108,7 +108,7 @@ def get_render(request, model, name, form, search_form, template='list_post.html
 	data_all = model.objects.filter(~Q(username='admin'))
 	param={}
 	if search_form.is_valid():
-		data = search_form
+		data = request.GET
 		param['groups__name'] = data.get('group') if data.get('group') else None
 		param['username'] = data.get('username') if data.get('username') else None
 

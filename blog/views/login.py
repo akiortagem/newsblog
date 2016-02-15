@@ -127,7 +127,7 @@ def get_render(request, model, name, form, search_form, template='list_post.html
 	  paged_data = paginator.page(paginator.num_pages)
 	  pages_dict = get_display_pages(paginator.num_pages, limit, paginator.num_pages)
 	return render(request, template,{'paged_data': paged_data, 'name':name, 
-		'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'form':form()})
+		'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'form':form(), 'search_form':search_form})
 
 def get_display_pages(page, limit, num_pages):
 	page=int(page)

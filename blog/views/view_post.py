@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, HttpResponse,
+from django.shortcuts import render, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

@@ -21,8 +21,8 @@ class UserForm(forms.ModelForm):
 		fields = ['username', 'password', 'first_name', 'last_name', 'email', 'groups']
 
 class SearchForm(forms.Form):
-	role = forms.ModelChoiceField(Group.objects.all(), widget=forms.Select)
-	username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Username'}))
+	role = forms.ModelChoiceField(Group.objects.all(), widget=forms.Select, required=False)
+	username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'placeholder':'Username'}), required=False)
 
 class ChangePasswordForm(forms.Form):
 	new_password = forms.CharField(label='Password', max_length=100, 

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext
 from ..models import *
+from ..forms import MessageSearchForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms.models import model_to_dict
 from django.db.models import ForeignKey
@@ -17,9 +18,38 @@ def list_post(request):
 @login_required(login_url='/blog/admin/login/')
 def list_message(request):
 	if request.user.has_perm('blog.can_view_message'):
+		template = 'list_message.html'
 		model = Message
 		name = 'Messages'
-		return get_render(request, model, name, template='list_message.html')
+		search_form = MessageSearchForm(request.GET)
+		field_names = model.ViewMeta.table_columns
+		data_all = model.objects.all()
+		param={}
+		if search_form.is_valid():
+			data=request.GET
+			if data.get('name'):
+				param['name'] = data.get('name')
+			if data.get('email'):
+				param['email'] = data.get('email')
+			if data.get('subject'):
+				param['subject'] = data.get('subject')
+		if param:
+			data_all = data_all.filter(**param)
+		view_name = data_all.model.ViewMeta.view_name
+		limit = 10
+		paginator = Paginator(data_all, limit)
+		page = request.GET.get('page')
+		try:
+		  paged_data = paginator.page(page)
+		  pages_dict = get_display_pages(page,limit, paginator.num_pages)
+		except PageNotAnInteger:
+		  paged_data = paginator.page(1)
+		  pages_dict = get_display_pages(1, limit, paginator.num_pages)
+		except EmptyPage:
+		  paged_data = paginator.page(paginator.num_pages)
+		  pages_dict = get_display_pages(paginator.num_pages, limit, paginator.num_pages)
+		return render(request, template,{'paged_data': paged_data, 'view_name':view_name, 'name':name, 'fields':field_names, 
+			'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'search_form':search_form})
 	return render(request, 'list_message.html',{'context':'you cannot view this page'})
 
 @login_required(login_url='/blog/admin/login/')

@@ -5,6 +5,19 @@
 <div class="container">
 	<h3>List of {{ view_name }}</h3>
 	{% if paged_data %}
+  <form action="" method="get" id="searchForm" class="form-inline">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ search_form.name|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+      {{ search_form.subject|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+      {{ search_form.email|addcss:"form-control" }}
+    </div>
+    <input type="submit" class="btn btn-info" value="Search">
+  </form>
 <table class="table table-striped table-bordered table-hover table-condensed tablesorter" id='messageTable'>
 	<tr>
 		{% for field in fields %}
@@ -162,7 +175,7 @@
 				$(this).css('font-weight', 'normal');
 			}
 			var messageDate = $(this).find("#messageDate").html();
-			var url = '/blog/admin/message/' + id;
+			var url = '/blog/admin/message/' + id + '/';
 			console.log('getting ' + url); 
 			$.ajax({
 				url:url,

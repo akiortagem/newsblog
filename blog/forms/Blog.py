@@ -33,12 +33,12 @@ class MessageSearchForm(forms.Form):
 	email = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Alamat E-Mail'}), required=False)
 	date_from = forms.DateTimeField(
 		required=False,
-		input_formats=['%Y-%m-%d']
+		input_formats=['%Y-%m-%d'],
 		label='Dari Tanggal'
 		)
 	date_till = forms.DateTimeField(
 		required=False,
-		input_formats=['%Y-%m-%d']
+		input_formats=['%Y-%m-%d'],
 		label='Hingga Tanggal'
 		)
 

@@ -26,7 +26,7 @@ def list_message(request):
 		data_all = model.objects.all()
 		param={}
 		if search_form.is_valid():
-			data=request.GET
+			data=MessageSearchForm(request.GET)
 			date_from = data.get('date_from', None)
 			date_till = data.get('date_till', None)
 			if data.get('name'):

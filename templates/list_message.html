@@ -14,22 +14,26 @@
 	{% if paged_data %}
   <form action="" method="get" id="searchForm" class="form-inline">
     {% csrf_token %}
-    <div class="form-group">
-      {{ search_form.name|addcss:"form-control input-sm" }}
+    <div class="row">
+	    <div class="form-group">
+	      {{ search_form.date_from.label }}
+	      {{ search_form.date_from|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.date_till.label }}
+	      {{ search_form.date_till|addcss:"form-control input-sm" }}
+	    </div>
     </div>
-    <div class="form-group">
-      {{ search_form.subject|addcss:"form-control input-sm" }}
-    </div>
-    <div class="form-group">
-      {{ search_form.email|addcss:"form-control input-sm" }}
-    </div>
-    <div class="form-group">
-      {{ search_form.date_from.label }}
-      {{ search_form.date_from|addcss:"form-control input-sm" }}
-    </div>
-    <div class="form-group">
-      {{ search_form.date_till.label }}
-      {{ search_form.date_till|addcss:"form-control input-sm" }}
+    <div class="row">
+	    <div class="form-group">
+	      {{ search_form.name|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.subject|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.email|addcss:"form-control input-sm" }}
+	    </div>
     </div>
     <button type="submit" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-search"></span></button>
   </form>

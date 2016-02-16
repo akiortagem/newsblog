@@ -27,6 +27,21 @@ class MessageForm(forms.ModelForm):
 		model = Message
 		exclude = ['date', 'status']
 
+class MessageSearchForm(forms.Form):
+	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Dari'}), required=False)
+	subject = forms.CharField(max_length=140, widget=forms.TextInput(attrs={'placeholder': 'Perihal'}), required=False)
+	email = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Alamat E-Mail'}), required=False)
+	date_from = forms.DateTimeField(
+		required=False,
+		input_formats=['%Y-%m-%d']
+		label='Dari Tanggal'
+		)
+	date_till = forms.DateTimeField(
+		required=False,
+		input_formats=['%Y-%m-%d']
+		label='Hingga Tanggal'
+		)
+
 class CategoryForm(forms.ModelForm):
 	class Meta:
 		model = Category

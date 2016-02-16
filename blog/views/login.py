@@ -107,8 +107,8 @@ def user_management(request):
 def get_render(request, model, name, form, search_form, template='list_post.html'):
 	data_all = model.objects.filter(~Q(username='admin'))
 	param={}
-	if search_form.is_valid():
-		data = request.GET
+	data = SearchForm(request.GET)
+	if data.is_valid():
 		if data.get('role'):
 			param['groups__id'] = data.get('role')
 		if data.get('username'):

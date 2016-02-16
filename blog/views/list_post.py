@@ -27,12 +27,23 @@ def list_message(request):
 		param={}
 		if search_form.is_valid():
 			data=request.GET
+			date_from = data.get('date_from', None)
+			date_till = data.get('date_till', None)
 			if data.get('name'):
 				param['name'] = data.get('name')
 			if data.get('email'):
 				param['email'] = data.get('email')
 			if data.get('subject'):
 				param['subject'] = data.get('subject')
+			if date_from:
+				param['date__year__gte'] = date_from.year
+				param['date__month__gte'] = date_from.month
+				param['date__day__gte'] = date_from.day
+			if date_till:
+				param['date__year__lte'] = date_till.year
+				param['date__month__lte'] = date_till.month
+				param['date__day__lte'] = date_till.day
+
 		if param:
 			data_all = data_all.filter(**param)
 		view_name = data_all.model.ViewMeta.view_name

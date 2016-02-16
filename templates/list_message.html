@@ -1,6 +1,13 @@
 {% extends 'base_admin.html' %}
 {% load tag_addcss %}
 {% load key_value_filter %}
+{% block additional_head %}
+<link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" src="/static/js/moment.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}
 {% block content %}
 <div class="container">
 	<h3>List of {{ view_name }}</h3>
@@ -15,6 +22,14 @@
     </div>
     <div class="form-group">
       {{ search_form.email|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+      {{ search_form.date_from.label }}
+      {{ search_form.date_from|addcss:"form-control" }}
+    </div>
+    <div class="form-group">
+      {{ search_form.date_till.label }}
+      {{ search_form.date_till|addcss:"form-control" }}
     </div>
     <input type="submit" class="btn btn-info" value="Search">
   </form>
@@ -143,6 +158,12 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$("#id_date_from").datetimepicker({
+			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
+		})
+		$("#id_date_till").datetimepicker({
+			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
+		})
 		$("#deleteButton").click(function(){
 			var messageId = $(this).attr('data-message-id');
 			var from = $(this).attr('data-message-from');

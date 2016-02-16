@@ -12,10 +12,10 @@
   <form action="" method="get" id="searchForm" class="form-inline">
     {% csrf_token %}
     <div class="form-group">
-      {{ search_form.role|addcss:"form-control" }}
+      {{ search_form.role|addcss:"form-control input-sm" }}
     </div>
     <div class="form-group">
-      {{ search_form.username|addcss:"form-control" }}
+      {{ search_form.username|addcss:"form-control input-sm" }}
     </div>
     <input type="submit" class="btn btn-info" value="Search">
   </form>

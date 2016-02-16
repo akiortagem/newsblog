@@ -16,6 +16,15 @@
     {% csrf_token %}
     <div class="row">
 	    <div class="form-group">
+	      {{ search_form.name|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.subject|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.email|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
 	      {{ search_form.date_from.label }}
 	      {{ search_form.date_from|addcss:"form-control input-sm" }}
 	    </div>
@@ -25,17 +34,8 @@
 	    </div>
     </div>
     <div class="row">
-	    <div class="form-group">
-	      {{ search_form.name|addcss:"form-control input-sm" }}
-	    </div>
-	    <div class="form-group">
-	      {{ search_form.subject|addcss:"form-control input-sm" }}
-	    </div>
-	    <div class="form-group">
-	      {{ search_form.email|addcss:"form-control input-sm" }}
-	    </div>
+    	<button type="submit" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-search"></span></button>
     </div>
-    <button type="submit" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-search"></span></button>
   </form>
 <table class="table table-striped table-bordered table-hover table-condensed tablesorter" id='messageTable'>
 	<tr>
@@ -168,6 +168,8 @@
 		$("#id_date_till").datetimepicker({
 			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
 		})
+		$("#id_date_from").attr('placeholder', 'Dari tanggal');
+		$("#id_date_till").attr('placeholder', 'Hingga tanggal');
 		$("#deleteButton").click(function(){
 			var messageId = $(this).attr('data-message-id');
 			var from = $(this).attr('data-message-from');

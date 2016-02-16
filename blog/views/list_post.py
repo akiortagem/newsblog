@@ -26,15 +26,15 @@ def list_message(request):
 		data_all = model.objects.all()
 		param={}
 		if search_form.is_valid():
-			data=MessageSearchForm(request.GET)
-			date_from = data.date_from
-			date_till = data.date_till
-			if data.name:
-				param['name'] = data.name
-			if data.email:
-				param['email'] = data.email
-			if data.subject:
-				param['subject'] = data.subject
+			data=search_form.cleaned_data
+			date_from = data.get('date_from', None)
+			date_till = data.get('date_till', None)
+			if data.get('name'):
+				param['name'] = data.get('name')
+			if data.get('email'):
+				param['email'] = data.get('email')
+			if data.get('subject'):
+				param['subject'] = data.get('subject')
 			if date_from:
 				param['date__year__gte'] = date_from.year
 				param['date__month__gte'] = date_from.month

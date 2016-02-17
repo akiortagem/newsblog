@@ -58,6 +58,17 @@ def list_post(request):
 			'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'search_form':search_form})
 	return HttpResponse(status=403)
 
+@login_required(login_url='/blog/admin/login/')
+def delete_post(request, id):
+	if request.user.has_perm('blog.can_delete_blog'):
+		try:
+			post = Blog.objects.get(id=id)
+			post.delete()
+			return HttpResponse(json.dumps({'delete_status':'success'}))
+		except:
+			return HttpResponse(json.dumps({'delete_status':'failed'}))
+	else:
+		return HttpResponse(status=403)
 
 @login_required(login_url='/blog/admin/login/')
 def list_message(request):

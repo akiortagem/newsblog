@@ -47,13 +47,16 @@
 		{% if data.status == 'UR' %}
 			<tr id="clickable" style="font-weight:bold;">
 		{% else %}
-			<tr id="clickable">
+			<tr id="messageRow-{{ data.id }}">
 		{% endif %}
 				<td>{{ data.name }}</td>
 				<td>{{ data.email }}</td>
 				<td>{{ data.subject }}</td>
 				<td id="messageDate">{{ data.date }}</td>
 				<td>
+				<a href="#" class="btn btn-info viewButton" data-toggle="tooltip" data-placement="right" title="delete" id="viewButton" data-message-id="{{ data.id }}" data-message-from="{{ data.name }}" data-message-date="{{ data.date }}" data-message-subject="{{ data.subject }}">
+					<span class="glyphicon glyphicon-eye-open"></span>
+				</a>
 				<a href="#" class="btn btn-info deleteButton" data-toggle="tooltip" data-placement="right" title="delete" id="deleteButton" data-message-id="{{ data.id }}" data-message-from="{{ data.name }}">
 					<span class="glyphicon glyphicon-remove"></span>
 				</a>
@@ -192,13 +195,13 @@
 		    	}
 		    })
 		});
-		$('#messageTable #clickable').click(function(){
-			var id = $(this).find(".messageId").html();
-			console.log($(this).css('font-weight'))
-			if($(this).css('font-weight') == 'bold'){
-				$(this).css('font-weight', 'normal');
+		$('.viewButton').click(function(){
+			var id = $(this).attr("data-message-id");
+			console.log($("#messageRow-"+id).css('font-weight'))
+			if($("#messageRow-"+id).css('font-weight') == 'bold'){
+				$("#messageRow-"+id).css('font-weight', 'normal');
 			}
-			var messageDate = $(this).find("#messageDate").html();
+			var messageDate = $(this).attr("data-message-date");
 			var url = '/blog/admin/message/' + id + '/';
 			console.log('getting ' + url); 
 			$.ajax({

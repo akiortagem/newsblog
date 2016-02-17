@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.template import RequestContext
 from ..models import *
-from ..forms import MessageSearchForm
+from ..forms import MessageSearchForm, BlogSearchForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms.models import model_to_dict
 from django.db.models import ForeignKey

@@ -11,9 +11,53 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 @login_required(login_url='/blog/admin/login/')
 def list_post(request):
-	model = Blog
-	name = 'Posts'
-	return get_render(request, model, name)
+	if request.user.has_perm('blog.can_view_blog'):
+		model = Blog
+		name = 'Posts'
+		template = 'list_post.html'
+		search_form = BlogSearchForm(request.GET)
+		field_names = model.ViewMeta.table_columns
+		data_all = model.objects.all()
+		param={}
+		if search_form.is_valid():
+			data=search_form.cleaned_data
+			date_from = data.get('date_from', None)
+			date_till = data.get('date_till', None)
+			if data.get('author'):
+				param['author__iexact'] = data.get('author')
+			if data.get('category'):
+				param['category'] = data.get('category')
+			if data.get('title'):
+				param['title__icontains'] = data.get('title')
+			if date_from:
+				param['date__year__gte'] = date_from.year
+				param['date__month__gte'] = date_from.month
+				param['date__day__gte'] = date_from.day
+			if date_till:
+				param['date__year__lte'] = date_till.year
+				param['date__month__lte'] = date_till.month
+				param['date__day__lte'] = date_till.day
+
+		if param:
+			data_all = data_all.filter(**param)
+			
+		view_name = data_all.model.ViewMeta.view_name
+		limit = 10
+		paginator = Paginator(data_all, limit)
+		page = request.GET.get('page')
+		try:
+		  paged_data = paginator.page(page)
+		  pages_dict = get_display_pages(page,limit, paginator.num_pages)
+		except PageNotAnInteger:
+		  paged_data = paginator.page(1)
+		  pages_dict = get_display_pages(1, limit, paginator.num_pages)
+		except EmptyPage:
+		  paged_data = paginator.page(paginator.num_pages)
+		  pages_dict = get_display_pages(paginator.num_pages, limit, paginator.num_pages)
+		return render(request, template,{'paged_data': paged_data, 'view_name':view_name, 'name':name, 'fields':field_names, 
+			'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'search_form':search_form})
+	return HttpResponse(status=403)
+
 
 @login_required(login_url='/blog/admin/login/')
 def list_message(request):
@@ -30,11 +74,11 @@ def list_message(request):
 			date_from = data.get('date_from', None)
 			date_till = data.get('date_till', None)
 			if data.get('name'):
-				param['name'] = data.get('name')
+				param['name__iexact'] = data.get('name')
 			if data.get('email'):
 				param['email'] = data.get('email')
 			if data.get('subject'):
-				param['subject'] = data.get('subject')
+				param['subject__icontains'] = data.get('subject')
 			if date_from:
 				param['date__year__gte'] = date_from.year
 				param['date__month__gte'] = date_from.month
@@ -61,7 +105,7 @@ def list_message(request):
 		  pages_dict = get_display_pages(paginator.num_pages, limit, paginator.num_pages)
 		return render(request, template,{'paged_data': paged_data, 'view_name':view_name, 'name':name, 'fields':field_names, 
 			'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'search_form':search_form})
-	return render(request, 'list_message.html',{'context':'you cannot view this page'})
+	return HttpResponse(status=403)
 
 @login_required(login_url='/blog/admin/login/')
 def count_unreads(request):

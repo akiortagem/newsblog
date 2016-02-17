@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load tag_addcss %}
 {% load key_value_filter %}
+{% load staticfiles %}
 {% block content %}
 <h2>Kontak Kami</h2>
 <div id="alerts">
 </div>
 <form action="" method="post" id="contactForm">
 {% csrf_token %}
-	<div class="row">
+	<div class="row" style="display:none;">
+		<img id="ajaxLoading" hidden src="{% static 'img/rolling.gif' %}">
+	</div>
+	<div class="row" id="formDiv">
 		<div class="col-sm-5 col-md-6">
 			<div class="form-group">
 				{{ form.name|addcss:"form-control" }}
@@ -34,18 +38,27 @@
 </form>
 <script>
 $('#contactForm').submit(function(e){
+	$("#formDiv").css("display","none")
+	$("#ajaxLoading").show()
     $.post('/blog/contact/', $(this).serialize(), function(data){
     	var stats = JSON.parse(data).form_status;
     	if(stats == 'success'){
     		var alert_pn = '<div class="alert alert-success">' +
     		'<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
     		'<strong>Sukses!</strong> Kami akan segera menghubungi anda kembali</div>';
+    		$("#id_name").val('')
+    		$("#id_phone").val('')
+    		$("#id_email").val('')
+    		$("#id_subject").val('')
+    		$("#id_message").val('')
     	} else {
     		var alert_pn = '<div class="alert alert-danger">' +
     		'<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
     		'<strong>Ups!</strong> Ada yang salah pada form anda</div>';
     	}
     	$('#alerts').html(alert_pn);
+    	$('#ajaxLoading').hide()
+    	$("#formDiv").css("display","inline")
        // of course you can do something more fancy with your respone
     });
     e.preventDefault();

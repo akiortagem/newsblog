@@ -30,13 +30,13 @@ def list_post(request):
 			if data.get('title'):
 				param['title__icontains'] = data.get('title')
 			if date_from:
-				param['date__year__gte'] = date_from.year
-				param['date__month__gte'] = date_from.month
-				param['date__day__gte'] = date_from.day
+				param['posted__year__gte'] = date_from.year
+				param['posted__month__gte'] = date_from.month
+				param['posted__day__gte'] = date_from.day
 			if date_till:
-				param['date__year__lte'] = date_till.year
-				param['date__month__lte'] = date_till.month
-				param['date__day__lte'] = date_till.day
+				param['posted__year__lte'] = date_till.year
+				param['posted__month__lte'] = date_till.month
+				param['posted__day__lte'] = date_till.day
 
 		if param:
 			data_all = data_all.filter(**param)

@@ -45,7 +45,7 @@
 	</tr>
 	{% for data in paged_data%}
 		{% if data.status == 'UR' %}
-			<tr id="clickable" style="font-weight:bold;">
+			<tr id="messageRow-{{ data.id }}" style="font-weight:bold;">
 		{% else %}
 			<tr id="messageRow-{{ data.id }}">
 		{% endif %}

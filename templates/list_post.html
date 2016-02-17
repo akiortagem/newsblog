@@ -1,10 +1,39 @@
 {% extends 'base_admin.html' %}
 {% load tag_addcss %}
 {% load key_value_filter %}
-
+{% block additional_head %}
+<link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" src="/static/js/moment.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}
 {% block content %}
 <div class="container">
 	<h3>List of {{ view_name }}</h3>
+  <form action="" method="get" id="searchForm" class="form-inline">
+    {% csrf_token %}
+    <div class="row">
+	    <div class="form-group">
+	      {{ search_form.category|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.title|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.author|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.date_from|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.date_till|addcss:"form-control input-sm" }}
+	    </div>
+    </div>
+    <div class="row">
+    	<button type="submit" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+    </div>
+  </form>
 	{% if paged_data %}
 <table class="table table-striped table-bordered table-hover table-condensed tablesorter">
 	<tr>
@@ -81,4 +110,16 @@
   		<p>Object {{ view }} is not found</p>
 	</div>
 	{% endif %}
+{% endblock %}
+{% block additional_content %}
+<script>
+		$("#id_date_from").datetimepicker({
+			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
+		})
+		$("#id_date_till").datetimepicker({
+			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
+		})
+		$("#id_date_from").attr('placeholder', 'Dari tanggal');
+		$("#id_date_till").attr('placeholder', 'Hingga tanggal');
+</script>
 {% endblock %}

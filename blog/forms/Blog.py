@@ -16,6 +16,21 @@ class BlogForm(forms.ModelForm):
 		model = Blog
 		exclude = ['posted', 'author']
 
+class BlogSearchForm(forms.Form):
+	category = forms.ModelChoiceField(Category.objects.all(), widget=forms.Select, required=False)
+	title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Judul'}), required=False)
+	author = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Penulis'}), required=False)
+	date_from = forms.DateTimeField(
+		required=False,
+		input_formats=['%Y-%m-%d'],
+		label='Dari Tanggal'
+		)
+	date_till = forms.DateTimeField(
+		required=False,
+		input_formats=['%Y-%m-%d'],
+		label='Hingga Tanggal'
+		)
+
 class MessageForm(forms.ModelForm):
 	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Name'}))
 	phone = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'No Telepon'}))

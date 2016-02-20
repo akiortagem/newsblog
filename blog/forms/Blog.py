@@ -69,3 +69,17 @@ class ImageForm(forms.ModelForm):
 	class Meta:
 		model = Image
 		exclude = ['date', 'uplodaded_by']
+
+class GallerySearchForm(forms.Form):
+	title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Judul'}), required=False)
+	author = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Dibuat oleh'}), required=False)
+	date_from = forms.DateTimeField(
+		required=False,
+		input_formats=['%Y-%m-%d'],
+		label='Dari Tanggal'
+		)
+	date_till = forms.DateTimeField(
+		required=False,
+		input_formats=['%Y-%m-%d'],
+		label='Hingga Tanggal'
+		)

@@ -15,7 +15,62 @@ def list_gallery(request):
 	if is_superauthor:
 		model = ImageGallery
 		name = 'Galleries'
-		return get_render(request, model, name, template='list_gallery.html')
+		template = 'list_post.html'
+		search_form = GallerySearchForm(request.GET)
+		field_names = model.ViewMeta.table_columns
+		data_all = model.objects.all()
+		param={}
+		if search_form.is_valid():
+			data=search_form.cleaned_data
+			date_from = data.get('date_from', None)
+			date_till = data.get('date_till', None)
+			if data.get('author'):
+				param['created_by__iexact'] = data.get('author')
+			if data.get('title'):
+				param['title__icontains'] = data.get('title')
+			if date_from:
+				param['date__year__gte'] = date_from.year
+				param['date__month__gte'] = date_from.month
+				param['date__day__gte'] = date_from.day
+			if date_till:
+				param['date__year__lte'] = date_till.year
+				param['date__month__lte'] = date_till.month
+				param['date__day__lte'] = date_till.day
+
+		if param:
+			data_all = data_all.filter(**param)
+			
+		view_name = data_all.model.ViewMeta.view_name
+		limit = 10
+		paginator = Paginator(data_all, limit)
+		page = request.GET.get('page')
+		try:
+		  paged_data = paginator.page(page)
+		  pages_dict = get_display_pages(page,limit, paginator.num_pages)
+		except PageNotAnInteger:
+		  paged_data = paginator.page(1)
+		  pages_dict = get_display_pages(1, limit, paginator.num_pages)
+		except EmptyPage:
+		  paged_data = paginator.page(paginator.num_pages)
+		  pages_dict = get_display_pages(paginator.num_pages, limit, paginator.num_pages)
+		return render(request, template,{'paged_data': paged_data, 'view_name':view_name, 'name':name, 'fields':field_names, 
+			'pages':pages_dict['pages'], 'pages_append':pages_dict['pages_append'], 'search_form':search_form})
+	else:
+		return HttpResponse(status=403)
+
+@login_required(login_url='/blog/admin/login/')
+def delete_gallery(request, galleryId):
+	is_superauthor = request.user.groups.filter(name='superauthor').exists()
+	if is_superauthor and request.is_ajax():
+		model = ImageGallery
+		try:
+			data = ImageGallery.objects.get(id=galleryId)
+			data.delete()
+			return HttpResponse(json.dumps({'delete_status':'success'}))
+		except:
+			return HttpResponse(json.dumps({'delete_status':'failed'}))
+	else:
+		return HttpResponse(status=403)
 
 def get_render(request, model, name, template='list_post.html'):
 	field_names = model.ViewMeta.table_columns

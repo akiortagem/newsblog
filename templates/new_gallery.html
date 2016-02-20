@@ -75,7 +75,7 @@
 	      <div class="modal-header" id="messageHeader">
 	        <h4 class="modal-title">Deleting Image</h4>
 	      </div>
-	      <div class="modal-body" id="messageBody" style="text-align:center;">
+	      <div class="modal-body" id="deleteModalBody" style="text-align:center;">
 	        <img src="{% static 'img/rolling.gif' %}">
 	      </div>
 	    </div>
@@ -156,12 +156,13 @@
 				var fname = (JSON.parse(data).file);
 				var id = (JSON.parse(data).imageId)
 				files.push(fname);
+				var filesNo = files.length - 1;
 				$("#imageUploadLoading").hide();
 				if(status == "success"){
 					$('#imageForm').find("input[type=text], textarea, input[type=file]").val("");
 					$('#alerts').html(alertSuccess);
 					$('#imagesRow').append(
-						'<div class="col-xs-2 imageDiv" style="cursor:pointer" id="'+ fname +'" data-image-id="'+id+'">'
+						'<div class="col-xs-2 imageDiv" style="cursor:pointer" id="'+ fname +'" data-image-id="'+id+'" data-image-no="'+filesNo+'">'
 						+	'<img src="{{ MEDIA_URL }}media/'+ fname +'" style="max-height:100px;">'
 						+	'<small class="image-file">'+fname+'</small>'
 						+	'<small class="delete-text" style="display:none;color:red;">delete?</small>'
@@ -211,12 +212,25 @@
 
 	$("#imagesRow").on('click', '.imageDiv', function(){
 		var id = $(this).attr('data-image-id')
+		var filesNo = $(this).attr('data-image-no')
 		console.log('delete id : ' + id)
 		$('#loadingModal').modal({
 		    backdrop: 'static',
 		    keyboard: false
+		});
+		files.splice(filesNo, 1)
+		$.ajax({
+			url:'/blog/admin/gallery/image/delete/' + id '/'
+			success:function(response){
+				var status = JSON.parse(response).delete_status;
+	    		if(status == 'success'){
+	    			$(this).css('display', 'none')
+	    			$('#loadingModal').modal('hide');		
+	    		} else {
+	    			$("#deleteModalBody").html('500 Server Error, contact admin');
+	    		}
+			}
 		})
-
 	});
 
 	$("#refresh").click(function (e) {

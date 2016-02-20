@@ -30,5 +30,6 @@ urlpatterns = [
 	url(r'^admin/gallery/new/upload_image/', views.upload_image, name='upload_image'),
 	url(r'^admin/gallery/new/', views.new_gallery, name='new_gallery'),
 	url(r'^admin/gallery/list/', views.list_gallery, name='list_gallery'),
+	url(r'^admin/gallery/delete/(?P<galleryId>[-\w]+)/', views.delete_gallery, name='delete_gallery'),
 	url(r'^admin/dash/', views.dashboard, name='dashboard'),
 ]

@@ -147,13 +147,14 @@ def upload_image(request):
 			return HttpResponse(json.dumps({'message':'wrong method'}))
 	else:
 		return HttpResponse(json.dumps({'message':'wrong user'}))
+
 @login_required(login_url='/blog/admin/login/')
 def delete_image(request, id):
 	is_superauthor = request.user.groups.filter(name='superauthor').exists()
 	if is_superauthor and request.is_ajax():
 		model = Image
 		try:
-			data = model.objects.get(id=galleryId)
+			data = model.objects.get(id=id)
 			data.delete()
 			return HttpResponse(json.dumps({'delete_status':'success'}))
 		except:

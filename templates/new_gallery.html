@@ -24,6 +24,15 @@
 		<i class="glyphicon glyphicon-plus" style="font-size:60px;"></i>
 		<h6>Tambah ganbar baru</h6>
 	</div>
+	{% if gallery %}
+		{% for image in gallery.images.all %}
+			<div class="col-xs-2 imageDiv" style="cursor:pointer" id="{{ image.image.fname }}" data-image-id="{{ image.image.id }}" data-image-no="{{ forloop.counter0 }}">
+				<img src="{{ MEDIA_URL }}{{ image.image }}" style="max-height:100px;">
+				<small class="image-file">{{ image.image.fname }}</small>
+				<small class="delete-text" style="display:none;color:red;">delete?</small>
+			</div>'
+		{% endfor %}
+	{% endif %}
 </div>
 {% endblock %}
 {% block additional_content %}

@@ -92,6 +92,10 @@ class Image(models.Model):
     def __unicode__(self):
         return self.title;
 
+    @property
+    def fname(self):
+        return str(self.image.name).split('/')[-1]
+
 class ImageGallery(models.Model):
     class Meta:
         ordering = ['-id']

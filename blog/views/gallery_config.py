@@ -128,6 +128,16 @@ def new_gallery(request):
 		return render(request, 'new_gallery.html', {'form':form})
 
 @login_required(login_url='/blog/admin/login/')
+def edit_gallery(request, id):
+	is_superauthor = request.user.groups.filter(name='superauthor').exists()
+	if is_superauthor:
+		gallery = ImageGallery.objects.get(id=id)
+		form = ImageForm(initial={'uploaded_by':request.user.id})
+		return render(request, 'new_gallery.html', {'form':form, 'gallery':gallery})
+
+
+
+@login_required(login_url='/blog/admin/login/')
 def upload_image(request):
 	is_superauthor = request.user.groups.filter(name='superauthor').exists()
 	if is_superauthor:
@@ -138,7 +148,7 @@ def upload_image(request):
 				submitted = formData.save(commit=False)
 				submitted.uploaded_by = request.user
 				submitted.save()
-				fname = str(submitted.image.name).split('/')[-1]
+				fname = submitted.fname
 				imageId = submitted.id
 				return HttpResponse(json.dumps({'upload_status':'success', 'file':fname, 'imageId':imageId}))
 			else:

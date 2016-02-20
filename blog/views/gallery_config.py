@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, HttpResponse
 
-from ..forms import ImageForm
+from ..forms import ImageForm, GallerySearchForm
 from ..models import ImageGallery, Image
 
 @login_required(login_url='/blog/admin/login/')

@@ -201,6 +201,7 @@ def create_gallery(request):
 			try:
 				gallery.save()
 				if editMode:
+					print "edit mode"
 					filesOri = request.POST.getlist('files_original[]')
 					for filename in filesOri:
 						if filename not in fns:

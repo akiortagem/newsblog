@@ -28,6 +28,7 @@ urlpatterns = [
 	url(r'^admin/user_management/', views.user_management, name='user_management'),
 	url(r'^admin/gallery/new/create/', views.create_gallery, name='create_gallery'),
 	url(r'^admin/gallery/new/upload_image/', views.upload_image, name='upload_image'),
+	url(r'^admin/gallery/edit/(?P<id>[-\w]+)/', views.edit_gallery, name='edit_gallery'),
 	url(r'^admin/gallery/new/', views.new_gallery, name='new_gallery'),
 	url(r'^admin/gallery/list/', views.list_gallery, name='list_gallery'),
 	url(r'^admin/gallery/image/delete/(?P<id>[-\w]+)/', views.delete_image, name='delete_image'),

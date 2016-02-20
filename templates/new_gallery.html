@@ -3,26 +3,6 @@
 {% load key_value_filter %}
 {% load staticfiles %}
 {% block content %}
-<style>
-  .overlay {
-    background: black;
-    height: 100%;
-    width: 100%;
-    opacity: 0.4;
-    top: 0;
-    left: 0;
-    position: absolute;
-    padding: 0;
-    transition: opacity .5s;
- 
-    p {
-      color: white;
-      line-height: 150px;
-      font-family: 'arial';
-      text-align: center;
-    }
-  }
-</style>
 <h1>Create new gallery</h1>
 <div class="row">
 	<div id="alertsHead">
@@ -163,12 +143,9 @@
 					$('#imageForm').find("input[type=text], textarea, input[type=file]").val("");
 					$('#alerts').html(alertSuccess);
 					$('#imagesRow').append(
-						'<div class="col-xs-2" style="cursor:pointer" id="'+ fname +'">'
+						'<div class="col-xs-2 imageDiv" style="cursor:pointer" id="'+ fname +'">'
 						+	'<img src="{{ MEDIA_URL }}media/'+ fname +'" style="max-height:100px;">'
 						+	'<small>'+fname+'</small>'
-						+ 	'<div class="overlay">'
-						+ 		'<p>delete</p>'
-						+ 	'</div>'
 						+ '</div>'
 						);
 				} else {
@@ -199,6 +176,11 @@
 		}else{
 			$('#alertsHead').html(alertHeadDanger2);
 		}
+	});
+
+	$("#imagesRow").on('mouseover', '.imageDiv', function(){
+		console.log('hovered!')
+		$(this).find('small').html('delete?')
 	});
 
 	$("#refresh").click(function (e) {

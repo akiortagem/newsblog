@@ -220,7 +220,7 @@
 		});
 		files.splice(filesNo, 1)
 		$.ajax({
-			url:'/blog/admin/gallery/image/delete/' + id +'/'
+			url:'/blog/admin/gallery/image/delete/' + id +'/',
 			success:function(response){
 				var status = JSON.parse(response).delete_status;
 	    		if(status == 'success'){

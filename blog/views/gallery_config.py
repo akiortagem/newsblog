@@ -15,7 +15,7 @@ def list_gallery(request):
 	if is_superauthor:
 		model = ImageGallery
 		name = 'Galleries'
-		template = 'list_post.html'
+		template = 'list_gallery.html'
 		search_form = GallerySearchForm(request.GET)
 		field_names = model.ViewMeta.table_columns
 		data_all = model.objects.all()

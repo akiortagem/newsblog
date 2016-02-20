@@ -115,3 +115,10 @@ class ImageGallery(models.Model):
     
     def __unicode__(self):
         return self.title;
+
+# class AboutUs(models.Model):
+#     class Meta:
+#         ordering = ['-id']
+#         verbose_name = 'Image Gallery'
+
+#     body = 

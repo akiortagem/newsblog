@@ -145,7 +145,8 @@
 					$('#imagesRow').append(
 						'<div class="col-xs-2 imageDiv" style="cursor:pointer" id="'+ fname +'">'
 						+	'<img src="{{ MEDIA_URL }}media/'+ fname +'" style="max-height:100px;">'
-						+	'<small>'+fname+'</small>'
+						+	'<small class="image-file">'+fname+'</small>'
+						+	'<small class="delete-text" style="display:none;color:red;">delete?</small>'
 						+ '</div>'
 						);
 				} else {
@@ -180,7 +181,14 @@
 
 	$("#imagesRow").on('mouseover', '.imageDiv', function(){
 		console.log('hovered!')
-		$(this).find('small').html('delete?')
+		$(this).find('.delete-text').css('display','inline')
+		$(this).find('.image-file').css('display','none')
+	});
+
+	$("#imagesRow").on('mouseleave', '.imageDiv', function(){
+		console.log('hovered!')
+		$(this).find('.delete-text').css('display','none')
+		$(this).find('.image-file').css('display','inline')
 	});
 
 	$("#refresh").click(function (e) {

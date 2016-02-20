@@ -3,7 +3,26 @@
 {% load key_value_filter %}
 {% load staticfiles %}
 {% block content %}
-
+<style>
+  .overlay {
+    background: black;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 0;
+    transition: opacity .5s;
+ 
+    p {
+      color: #fff;
+      line-height: 150px;
+      font-family: 'arial';
+      text-align: center;
+    }
+  }
+</style>
 <h1>Create new gallery</h1>
 <div class="row">
 	<div id="alertsHead">
@@ -147,6 +166,9 @@
 						'<div class="col-xs-2" style="cursor:pointer" id="'+ fname +'">'
 						+	'<img src="{{ MEDIA_URL }}media/'+ fname +'" style="max-height:100px;">'
 						+	'<small>'+fname+'</small>'
+						+ '</div>'
+						+ '<div class="overlay">'
+						+ 	'<p>delete</p>'
 						+ '</div>'
 						);
 				} else {

@@ -30,7 +30,7 @@
 	</div>
 	{% if gallery %}
 		{% for image in gallery.images.all %}
-			<div class="col-xs-2 imageDiv" style="cursor:pointer" id="{{ image.fname }}" data-image-id="{{ image.id }}" data-image-no="{{ forloop.counter0 }}">
+			<div class="col-xs-2 imageDiv" style="cursor:pointer" id="{{ image.fname }}" data-image-id="{{ image.id }}" data-image-no="{{ forloop.counter0 }}" data-image-status="original">
 				<img src="{{ MEDIA_URL }}{{ image.image }}" style="max-height:100px;">
 				<small class="image-file">{{ image.fname }}</small>
 				<small class="delete-text" style="display:none;color:red;">delete?</small>
@@ -185,7 +185,7 @@
 					$('#imageForm').find("input[type=text], textarea, input[type=file]").val("");
 					$('#alerts').html(alertSuccess);
 					$('#imagesRow').append(
-						'<div class="col-xs-2 imageDiv" style="cursor:pointer" id="'+ fname +'" data-image-id="'+id+'" data-image-no="'+filesNo+'">'
+						'<div class="col-xs-2 imageDiv" style="cursor:pointer" id="'+ fname +'" data-image-id="'+id+'" data-image-no="'+filesNo+'" data-image-status="added">'
 						+	'<img src="{{ MEDIA_URL }}media/'+ fname +'" style="max-height:100px;">'
 						+	'<small class="image-file">'+fname+'</small>'
 						+	'<small class="delete-text" style="display:none;color:red;">delete?</small>'
@@ -239,6 +239,7 @@
 
 	$("#imagesRow").on('click', '.imageDiv', function(){
 		var id = $(this).attr('data-image-id')
+		var imageStatus = $(this).attr("data-image-status")
 		var thisElement = $(this)
 		console.log(thisElement)
 		var filesNo = $(this).attr('data-image-no')
@@ -248,7 +249,7 @@
 		    keyboard: false
 		});
 		files.splice(filesNo, 1)
-		if(!editMode){
+		if(imageStatus == "added"){
 		$.ajax({
 			url:'/blog/admin/gallery/image/delete/' + id +'/',
 			success:function(response){

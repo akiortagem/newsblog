@@ -8,7 +8,11 @@
 	<div id="alertsHead">
 	</div>
 	<div class="form-group" id="formGallery">
-		<input class="form-control" id="galleryTitle" maxlength="100" name="title" placeholder="Judul Galeri" type="text">
+		{% if gallery %}
+			<input class="form-control" id="galleryTitle" maxlength="100" name="title" placeholder="Judul Galeri" type="text" value="{{ gallery.title }}">
+		{% else %}
+			<input class="form-control" id="galleryTitle" maxlength="100" name="title" placeholder="Judul Galeri" type="text">
+		{% endif %}
 		</br>
 		<button type="button" class="btn btn-success" id='createGallery'>Selesai</button>
 	</div>
@@ -112,7 +116,13 @@
         '<strong>Galeri berhasil dibuat</strong></div>';
     var alertSuccess = '<div class="alert alert-success">' +
         '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
-        '<strong>Ok</strong> Gambar berhasil di upload</div>'; 
+        '<strong>Ok</strong> Gambar berhasil di upload</div>';
+
+    {% if gallery %}
+    	{% for image in gallery.images.all %}
+    		files.push('{{ image.fname }}')
+    	{% endfor %}
+    {% endif %}
 	function getCookie(name) {
 	    var cookieValue = null;
 	    if (document.cookie && document.cookie != '') {

@@ -139,7 +139,8 @@ def upload_image(request):
 				submitted.uploaded_by = request.user
 				submitted.save()
 				fname = str(submitted.image.name).split('/')[-1]
-				return HttpResponse(json.dumps({'upload_status':'success', 'file':fname}))
+				imageId = submitted.id
+				return HttpResponse(json.dumps({'upload_status':'success', 'file':fname, 'imageId':imageId}))
 			else:
 				return HttpResponse(json.dumps({'upload_status':formData.errors}))
 		else:

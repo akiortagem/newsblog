@@ -98,6 +98,7 @@
 
 	<script>
 	var files = [];
+	var filesOri = [];
 	var imageCount = 0;
 	var alertDanger = '<div class="alert alert-danger">' +
         '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
@@ -117,11 +118,14 @@
     var alertSuccess = '<div class="alert alert-success">' +
         '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
         '<strong>Ok</strong> Gambar berhasil di upload</div>';
-
+    var editMode = false;
     {% if gallery %}
     	{% for image in gallery.images.all %}
     		files.push('{{ image.fname }}')
+    		filesOri = files
     	{% endfor %}
+    	editMode = true;
+
     {% endif %}
 	function getCookie(name) {
 	    var cookieValue = null;
@@ -200,7 +204,11 @@
 				$("#imagesRow").hide();
 				$("#formGallery").hide();
 				$("#galleryCreateLoading").show();
-				$.post("{% url 'blog:create_gallery' %}", {'files':files, 'title':$("#galleryTitle").val()}, function (data){
+				var context = {'files':files, 'edit_mode':false, 'title':$("#galleryTitle").val()}
+				if(editMode){
+					context = {'files':files, 'files_original':filesOri, 'edit_mode':true, 'title':$("#galleryTitle").val(), 'gallery':'{{ gallery.id }}'}
+				}
+				$.post("{% url 'blog:create_gallery' %}", context, function (data){
 				 var status = JSON.parse(data).create_status;
 				 console.log(data);
 				 if(status == 'success'){
@@ -240,6 +248,7 @@
 		    keyboard: false
 		});
 		files.splice(filesNo, 1)
+		if(!editMode){
 		$.ajax({
 			url:'/blog/admin/gallery/image/delete/' + id +'/',
 			success:function(response){
@@ -252,6 +261,9 @@
 	    		}
 			}
 		})
+		} else {
+			$('#loadingModal').modal('hide');
+		}
 	});
 
 	$("#refresh").click(function (e) {

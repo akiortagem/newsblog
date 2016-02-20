@@ -180,10 +180,14 @@ def create_gallery(request):
 		if request.method == "POST":
 			fns = request.POST.getlist('files[]')
 			title = request.POST.get('title')
-			gallery = ImageGallery()
+			editMode = request.POST.get('edit_mode')
+			gallery = ImageGallery() if not editMode else ImageGallery.objects.get(id=int(request.POST.get('gallery')))
 			gallery.created_by = request.user
 			gallery.title = title
-			gallery.save()
+
+			if not editMode:
+				gallery.save()
+
 			filenames = []
 			images = []
 			imagesName = []
@@ -193,9 +197,16 @@ def create_gallery(request):
 				images.append(image)
 				filenames.append(filename)
 				imagesName.append(image.image.name)
-			gallery.images.add(*images)
+			gallery.images = images
 			try:
+				if editMode:
+					filesOri = request.POST.getlist('files_original[]')
+					for filename in filesOri:
+						if filename not in fns:
+							filename = "media/" + filename
+							image = Image.objects.get(image=filename)
+							image.delete()
 				gallery.save()
 				return HttpResponse(json.dumps({'create_status':'success', 'title':title, 'files':filenames, 'images':imagesName}))
-			except:
-				return HttpResponse(json.dumps({'create_status':'failed', 'title':title, 'files':filenames, 'images':imagesName}))
+			except Exception, e:
+				return HttpResponse(json.dumps({'create_status':'failed', 'title':title, 'files':filenames, 'images':imagesName, 'exception':str(e)}))

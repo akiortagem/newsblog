@@ -146,7 +146,21 @@ def upload_image(request):
 		else:
 			return HttpResponse(json.dumps({'message':'wrong method'}))
 	else:
-		return HttpResponse(json.dumps({'message':'wrong user'}))		
+		return HttpResponse(json.dumps({'message':'wrong user'}))
+@login_required(login_url='/blog/admin/login/')
+def delete_image(request, id):
+	is_superauthor = request.user.groups.filter(name='superauthor').exists()
+	if is_superauthor and request.is_ajax():
+		model = Image
+		try:
+			data = model.objects.get(id=galleryId)
+			data.delete()
+			return HttpResponse(json.dumps({'delete_status':'success'}))
+		except:
+			return HttpResponse(json.dumps({'delete_status':'failed'}))
+	else:
+		return HttpResponse(status=403)
+
 
 @login_required(login_url='/blog/admin/login/')
 def create_gallery(request):

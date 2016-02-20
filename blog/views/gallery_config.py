@@ -199,6 +199,7 @@ def create_gallery(request):
 				imagesName.append(image.image.name)
 			gallery.images = images
 			try:
+				gallery.save()
 				if editMode:
 					filesOri = request.POST.getlist('files_original[]')
 					for filename in filesOri:
@@ -206,7 +207,6 @@ def create_gallery(request):
 							filename = "media/" + filename
 							image = Image.objects.get(image=filename)
 							image.delete()
-				gallery.save()
 				return HttpResponse(json.dumps({'create_status':'success', 'title':title, 'files':filenames, 'images':imagesName}))
 			except Exception, e:
 				return HttpResponse(json.dumps({'create_status':'failed', 'title':title, 'files':filenames, 'images':imagesName, 'exception':str(e)}))

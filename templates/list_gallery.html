@@ -1,10 +1,34 @@
 {% extends 'base_admin.html' %}
 {% load tag_addcss %}
 {% load key_value_filter %}
-
+{% block additional_head %}
+<link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" src="/static/js/moment.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}
 {% block content %}
 <div class="container">
 	<h3>List of {{ view_name }}</h3>
+  <form action="" method="get" id="searchForm" class="form-inline">
+    {% csrf_token %}
+    <div class="row">
+	    <div class="form-group">
+	      {{ search_form.title|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.author|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.date_from|addcss:"form-control input-sm" }}
+	    </div>
+	    <div class="form-group">
+	      {{ search_form.date_till|addcss:"form-control input-sm" }}
+	    </div>
+	   	<button type="submit" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+    </div>
+  </form>
 	{% if paged_data %}
 <table class="table table-striped table-bordered table-hover table-condensed tablesorter">
 	<tr>
@@ -25,7 +49,7 @@
 				<a href="/blog/admin/gallery/edit/{{ data.id }}" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="edit post">
 					<span class="glyphicon glyphicon-edit"></span>
 				</a>
-				<a href="#" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="delete">
+				<a href="#" class="btn btn-info deleteButton" data-toggle="tooltip" data-placement="right" title="delete" id="deleteButton" data-gallery-id="{{ data.id }}" data-gallery-title="{{ data.title }}">
 					<span class="glyphicon glyphicon-remove"></span>
 				</a>
 			</td>
@@ -81,4 +105,66 @@
   		<p>Object {{ view }} is not found</p>
 	</div>
 	{% endif %}
+{% endblock %}
+{% block additional_content %}
+<div id="postDeleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" id="postHeader">
+        <button type="button" class="close" data-dismiss="modal" id='closeModal'>&times;</button>
+        <h4 class="modal-title">Hapus galeri dengan judul : <span id="postTitle"></span></h4>
+      </div>
+      <div class="modal-body" id="deleteModalBody" style="text-align:center;">
+        <div class="row" id="deleteBody" style="text-align:center;padding-top:10px;">
+        </div>
+        <div class="row" style="text-align:center;padding-top:10px;">
+          <button type="button" class="btn btn-success" id='yesDelete'>Ya</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id='noDelete'>Tidak</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal" id='closeDeleteModal'>Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+		$("#id_date_from").datetimepicker({
+			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
+		})
+		$("#id_date_till").datetimepicker({
+			format:"YYYY-MM-DD", showTodayButton:true, showClose:true
+		})
+		$("#id_date_from").attr('placeholder', 'Dari tanggal');
+		$("#id_date_till").attr('placeholder', 'Hingga tanggal');
+		$(".deleteButton").click(function(){
+			console.log('clicked delete!')
+			var postId = $(this).attr('data-gallery-id');
+			var title = $(this).attr('data-gallery-title');
+			$("#postTitle").html(title)
+			$("#deleteBody").html('Apakah anda yakin mau menghapus galeri ini?')
+			$("#yesDelete").attr('data-gallery-id',postId)
+			$("#postDeleteModal").modal({backdrop: 'static', keyboard: false})
+		});
+		$("#yesDelete").click(function(){
+			var postId = $(this).attr('data-post-id');
+			var ajaxLoader = "/static/img/rolling.gif"
+		    $("#deleteModalBody").html('<img src='+ ajaxLoader +'>')
+		    $('#closeDeleteModal').prop('disabled', true);
+		    $.ajax({
+		    	url:'/blog/admin/gallery/delete/' + postId + '/',
+		    	success:function(response){
+		    		var status = JSON.parse(response).delete_status;
+		    		if(status == 'success'){
+		    			location.reload();
+		    		} else {
+		    			$("#deleteModalBody").html('500 Server Error, contact admin');
+		    		}
+		    	}
+		    })
+		});
+</script>
 {% endblock %}

@@ -212,6 +212,8 @@
 
 	$("#imagesRow").on('click', '.imageDiv', function(){
 		var id = $(this).attr('data-image-id')
+		var thisElement = $(this)
+		console.log(thisElement)
 		var filesNo = $(this).attr('data-image-no')
 		console.log('delete id : ' + id)
 		$('#loadingModal').modal({
@@ -224,7 +226,7 @@
 			success:function(response){
 				var status = JSON.parse(response).delete_status;
 	    		if(status == 'success'){
-	    			$(this).css('display', 'none')
+	    			$(thisElement).css('display', 'none')
 	    			$('#loadingModal').modal('hide');		
 	    		} else {
 	    			$("#deleteModalBody").html('500 Server Error, contact admin');

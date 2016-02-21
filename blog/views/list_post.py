@@ -13,7 +13,7 @@ from blog.utils import is_superauthor
 
 @login_required(login_url='/blog/admin/login/')
 def list_post(request):
-	if request.user.has_perm('blog.can_change_blog'):
+	if request.user.has_perm('blog.change_blog'):
 		model = Blog
 		name = 'Posts'
 		template = 'list_post.html'
@@ -65,7 +65,7 @@ def list_post(request):
 
 @login_required(login_url='/blog/admin/login/')
 def delete_post(request, id):
-	if request.user.has_perm('blog.can_delete_blog'):
+	if request.user.has_perm('blog.delete_blog'):
 		try:
 			post = Blog.objects.get(id=id)
 			post.delete()

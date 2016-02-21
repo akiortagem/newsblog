@@ -63,7 +63,7 @@
 	{% endfor %}
 </table>
 	     <a href="{% url 'blog:new_post' %}" class="btn btn-info">
-         	<span class="glyphicon glyphicon-plus"></span> Create New {{ Name }}
+         	<span class="glyphicon glyphicon-plus"></span> Buat Post!
         </a>
 </div>
 <div>
@@ -107,8 +107,11 @@
 </div>
 	{% else %}
 	<div class="container">
-  		<h3>Error</h3>
-  		<p>Object {{ view }} is not found</p>
+  		<h3>Ups!</h3>
+  		<p>Belum ada post yang ditulis oleh anda, atau database post kosong</p>
+  	     <a href="{% url 'blog:new_post' %}" class="btn btn-info">
+         	<span class="glyphicon glyphicon-plus"></span> Buat Post!
+        </a>
 	</div>
 	{% endif %}
 {% endblock %}

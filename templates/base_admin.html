@@ -38,17 +38,21 @@
                 <li>
                     <a href="{% url 'blog:change_password' %}">Ganti Password</a>
                 </li>
-                {% if user|is_superauthor %}
+                {% if user|is_superauthor or user|is_superuser %}
                 <li>
                     <a href="{% url 'blog:user_management' %}">Manajemen User</a>
                 </li>
                 {% endif %}
+                {% if user|is_superuser or user|is_superauthor %}
                 <li>
                     <a href="{% url 'blog:list_gallery' %}">Konfigurasi Galeri</a>
                 </li>
+                {% endif %}
+                {% if user|is_superuser or user|is_superauthor %}
                 <li>
                     <a href="{% url 'blog:edit_about_us' %}">Ubah Halaman Tentang Kami</a>
                 </li>
+                {% endif %}
                 <li>
                     <a href="{% url 'blog:user_logout' %}">Log Out</a>
                 </li>

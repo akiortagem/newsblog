@@ -9,6 +9,8 @@ from django.forms.models import model_to_dict
 from django.db.models import ForeignKey
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from blog.utils import is_superauthor
+
 @login_required(login_url='/blog/admin/login/')
 def list_post(request):
 	if request.user.has_perm('blog.can_view_blog'):
@@ -23,7 +25,7 @@ def list_post(request):
 			data=search_form.cleaned_data
 			date_from = data.get('date_from', None)
 			date_till = data.get('date_till', None)
-			if data.get('author'):
+			if data.get('author') and (is_superauthor(request.user) or request.user.is_superuser) :
 				param['author__iexact'] = data.get('author')
 			if data.get('category'):
 				param['category'] = data.get('category')
@@ -40,6 +42,9 @@ def list_post(request):
 
 		if param:
 			data_all = data_all.filter(**param)
+
+		if not request.user.is_superuser or not is_superauthor(request.user):
+			data_all = data_all.filter(author=request.user)
 			
 		view_name = data_all.model.ViewMeta.view_name
 		limit = 10

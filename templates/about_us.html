@@ -3,6 +3,7 @@
  <style>
  #pic {
  	max-height: 100px;
+ 	vertical-align:middle;
 }
  </style>
  {% endblock %}
@@ -10,7 +11,6 @@
 	<div class="row">
 			<h1>Tentang Kami</h1>
 			<img src="{{ MEDIA_URL }}{{ about_us.image }}" id="pic">
-			<br>
-			{{ about_us.body|safe }}
+			<span>{{ about_us.body|safe }}</span>
 	</div>
 {% endblock %}

@@ -21,6 +21,7 @@ tinyMCE.init({
 			<div class="alert alert-danger">
 	        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	        Halaman gagal disimpan</div>
+		{% endif %}        
 	{% endif %}
 	<form action="" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}

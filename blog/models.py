@@ -125,7 +125,7 @@ class ImageGallery(models.Model):
 class AboutUs(models.Model):
     class Meta:
         ordering = ['-id']
-        verbose_name = 'Image Gallery'
+        verbose_name = 'About Us'
 
     body = tinymce_models.HTMLField()
     image = models.ImageField(upload_to = 'media/', default = 'media/no-img.jpg')

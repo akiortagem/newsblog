@@ -13,7 +13,7 @@ from blog.utils import is_superauthor
 
 @login_required(login_url='/blog/admin/login/')
 def list_post(request):
-	if request.user.has_perm('blog.can_view_blog'):
+	if request.user.has_perm('blog.can_change_blog'):
 		model = Blog
 		name = 'Posts'
 		template = 'list_post.html'

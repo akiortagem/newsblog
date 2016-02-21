@@ -94,4 +94,4 @@ def get_image(request, gallery_id, image_queue):
 
 def about_us(request):
 	aboutUs = AboutUs.objects.all().first()
-	return render(request, 'about_us.html', {'about_us':AboutUs})
+	return render(request, 'about_us.html', {'about_us':aboutUs})

@@ -1,0 +1,1 @@
+from user_checks import is_superauthor

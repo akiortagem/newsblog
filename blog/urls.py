@@ -5,6 +5,7 @@ urlpatterns = [
 	url(r'^view/(?P<slug>[-\w]+)/', views.view_post, name='view_post'),
 	url(r'^posts/get/',views.endless_post, name='endless_post'),
 	url(r'^posts/',views.list_post_front, name='list_post_front'),
+	url(r'^about_us/',views.about_us, name='about_us'),
 	url(r'^contact/',views.insert_contact, name='contact'),
 	url(r'^galleries/get/',views.endless_gallery, name='endless_gallery'),
 	url(r'^galleries/view/(?P<gallery_id>[-\w]+)/get_image/(?P<image_queue>[-\w]+)/',views.get_image, name='get_image'),

@@ -91,3 +91,7 @@ def get_image(request, gallery_id, image_queue):
 	images = gallery.images.order_by('-date')
 	image = images[image_queue]
 	return  HttpResponse(json.dumps({'image':image.image.name}))
+
+def about_us(request):
+	aboutUs = AboutUs.objects.all().first()
+	return render(request, 'about_us.html', {'about_us':AboutUs})

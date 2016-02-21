@@ -1,6 +1,15 @@
 {% extends 'base_admin.html' %}
 {% load tag_addcss %}
+{% load staticfiles %}
 {% block content %}
+{% block additional_head %}
+<script type="text/javascript" src='{% static "tiny_mce/tiny_mce.js" %}'></script>
+<script>
+tinyMCE.init({
+    mode: "textareas",
+    theme: "advanced",
+});
+</script>
 <h2>Create a new post</h2>
 	<form action="" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}

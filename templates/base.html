@@ -22,7 +22,7 @@
 	<li><a href="{% url 'blog:list_gallery_front' %}">Galeri</a></li>
   	<li><a href="{% url 'blog:list_post_front' %}">Berita</a></li>
     {% if user.is_authenticated %}
-      <li><a href="{% url 'blog:dashboard' %}"><b>Dashboard<b></a></li>
+      <li><a href="{% url 'blog:dashboard' %}"><b>Dashboard</b></a></li>
     {% endif %}
   </ul>
   </div>

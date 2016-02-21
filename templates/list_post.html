@@ -20,9 +20,11 @@
 	    <div class="form-group">
 	      {{ search_form.title|addcss:"form-control input-sm" }}
 	    </div>
+	    {% if user|is_superuser or user|is_superauthor %}
 	    <div class="form-group">
 	      {{ search_form.author|addcss:"form-control input-sm" }}
 	    </div>
+	    {% endif %}
 	    <div class="form-group">
 	      {{ search_form.date_from|addcss:"form-control input-sm" }}
 	    </div>

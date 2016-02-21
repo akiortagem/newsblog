@@ -18,9 +18,10 @@ class ImageGalleryAdmin(admin.ModelAdmin):
 	list_display = ('title', 'created_by', 'date')
 	filter_horizontal = ('images',)
 
+admin.site.register(AboutUs)
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(Category)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(Image, ImageAdmin)
 admin.site.register(ImageGallery, ImageGalleryAdmin)
-admin.site.register(AboutUs)
+

@@ -12,6 +12,7 @@ class BlogForm(forms.ModelForm):
 			)
 
 	publish_on = forms.DateField(widget=SelectDateWidget)
+	body = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
 
 	class Meta:
 		model = Blog

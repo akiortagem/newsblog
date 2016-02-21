@@ -24,6 +24,7 @@ def new_post(request):
 	else:
 		return render(request, 'new_post.html', {'form':form_inst})
 
+@login_required(login_url='/blog/admin/login/')
 def new_category(request):
 	form = CategoryForm
 	form_inst = form(initial={'author':request.user})
@@ -41,3 +42,17 @@ def new_category(request):
 			return render(request, 'post_status.html', {'status':'failed'})
 	else:
 		return render(request, 'new_post.html', {'form':form_inst})
+
+@login_required(login_url='/blog/admin/login/')
+def edit_about_us(request):
+	body = AboutUs.objects.all().first()
+	form = AboutUsForm(instance=body) if body else AboutUsForm()
+	if request.method == 'POST':
+		formData = form(request.POST)
+		if formData.is_valid():
+			formData.save()
+			return render(request, 'edit_about_us.html', {'status':'success'})
+		else:
+			return render(request, 'edit_about_us.html', {'status':'failed', 'form':form})
+	else:
+		return render(request, 'edit_about_us.html', {'form':form})

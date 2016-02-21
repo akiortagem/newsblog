@@ -8,6 +8,7 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'newsblog.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
     url(r'^$', index, name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^blog/',include(blog_urls, namespace='blog')),

@@ -33,5 +33,6 @@ urlpatterns = [
 	url(r'^admin/gallery/list/', views.list_gallery, name='list_gallery'),
 	url(r'^admin/gallery/image/delete/(?P<id>[-\w]+)/', views.delete_image, name='delete_image'),
 	url(r'^admin/gallery/delete/(?P<galleryId>[-\w]+)/', views.delete_gallery, name='delete_gallery'),
+	url(r'^admin/about_us/edit/', views.edit_about_us, name='edit_about_us'),
 	url(r'^admin/dash/', views.dashboard, name='dashboard'),
 ]

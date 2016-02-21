@@ -14,7 +14,7 @@ class PostStatus:
 class Blog(models.Model):
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
-    body = models.TextField()
+    body = tinymce_models.HTMLField()
     posted = models.DateTimeField(db_index=True, auto_now_add=True)
     status = models.CharField(max_length=2, choices=PostStatus.status, default='OK')
     publish_on = models.DateField()

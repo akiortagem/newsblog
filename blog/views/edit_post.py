@@ -3,7 +3,7 @@ from ..models import Blog
 from ..forms import BlogForm
 
 def edit_post(request, slug):
-	if request.user.has_perm('blog.can_change_blog'):
+	if request.user.has_perm('blog.change_blog'):
 		form = BlogForm
 		model = Blog
 		post = Blog.objects.get(slug=slug)

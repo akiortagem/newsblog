@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from custom_widgets import *
+from tinymce.widgets import TinyMCE
 
 from ..models import *
 
@@ -83,3 +84,11 @@ class GallerySearchForm(forms.Form):
 		input_formats=['%Y-%m-%d'],
 		label='Hingga Tanggal'
 		)
+
+class AboutUsForm(forms.ModelForm):
+
+	body = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+
+	class Meta:
+		model = AboutUs
+		exclude = ['date']

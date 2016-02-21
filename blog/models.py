@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from tinymce import models as tinymce_models
+
 DEFAULT_AUTHOR_ID = 1
 
 class PostStatus:
@@ -120,9 +122,14 @@ class ImageGallery(models.Model):
     def __unicode__(self):
         return self.title;
 
-# class AboutUs(models.Model):
-#     class Meta:
-#         ordering = ['-id']
-#         verbose_name = 'Image Gallery'
+class AboutUs(models.Model):
+    class Meta:
+        ordering = ['-id']
+        verbose_name = 'Image Gallery'
 
-#     body = 
+    body = tinymce_models.HTMLField()
+    image = models.ImageField(upload_to = 'media/', default = 'media/no-img.jpg')
+    date = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.date.strftime('%s %B %Y')

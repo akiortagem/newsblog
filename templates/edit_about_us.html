@@ -1,0 +1,23 @@
+{% extends 'base_admin.html' %}
+{% load tag_addcss %}
+{% block additional_head %}
+<script type="text/javascript" src="{% static "js/tiny_mce/tiny_mce.js" %}"></script>
+<script>
+tinyMCE.init({
+    mode: "textareas",
+    theme: "advanced",
+});
+</script>
+{% endblock %}
+{% block content %}
+<h2>Ubah Halaman Tentang Kami</h2>
+	<form action="" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		{% for field in form %}
+			{{ field.label }} :
+	 		{{ field|addcss:"form-control" }}
+			</br>
+		{% endfor %}
+		<input type="submit" name="save-only" class="btn" value="Simpan">
+	</form>
+{% endblock %}

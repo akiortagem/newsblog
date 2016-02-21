@@ -46,13 +46,14 @@ def new_category(request):
 @login_required(login_url='/blog/admin/login/')
 def edit_about_us(request):
 	body = AboutUs.objects.all().first()
-	form = AboutUsForm(instance=body) if body else AboutUsForm()
+	form = AboutUsForm
+	form_inst = AboutUsForm(instance=body) if body else AboutUsForm()
 	if request.method == 'POST':
-		formData = form(request.POST)
+		formData = form(request.POST, request.FILES, instance=body) if body else form(request.POST, request.FILES) 
 		if formData.is_valid():
 			formData.save()
 			return render(request, 'edit_about_us.html', {'status':'success'})
 		else:
-			return render(request, 'edit_about_us.html', {'status':'failed', 'form':form})
+			return render(request, 'edit_about_us.html', {'status':'failed', 'form':form_inst})
 	else:
-		return render(request, 'edit_about_us.html', {'form':form})
+		return render(request, 'edit_about_us.html', {'form':form_inst})

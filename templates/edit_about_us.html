@@ -12,6 +12,16 @@ tinyMCE.init({
 {% endblock %}
 {% block content %}
 <h2>Ubah Halaman Tentang Kami</h2>
+	{% if status %}
+		{% if status == 'success' %}
+			<div class="alert alert-success">
+	        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	        Halaman berhasil disimpan</div>
+	    {% else %}
+			<div class="alert alert-danger">
+	        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	        Halaman gagal disimpan</div>
+	{% endif %}
 	<form action="" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		{% for field in form %}

@@ -7,6 +7,9 @@ def edit_post(request, slug):
 		form = BlogForm
 		model = Blog
 		post = Blog.objects.get(slug=slug)
+		if not post.author == request.user and not request.user.is_superuser:
+			return HttpResponse(status=403)
+
 		form_instance = form(instance=post)
 		if request.method == 'POST':
 			formData = form(request.POST, request.FILES, instance=post)

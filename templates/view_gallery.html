@@ -85,7 +85,7 @@ function render_images(data){
 function render_pagination(data){
 	var pagination = JSON.parse(data).paginator
 	if(pagination.has_next){
-		next_link = '/blog/galleries/view/'+ galleryId +'/get/' + pagination.next
+		next_link = '/blog/galleries/view/'+ galleryId +'/get/?page=' + pagination.next
 		$("#showMoreDiv").show()
 	}
 }

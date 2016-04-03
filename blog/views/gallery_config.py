@@ -182,7 +182,12 @@ def create_gallery(request):
 			title = request.POST.get('title')
 			editMode = request.POST.get('edit_mode')
 			print editMode
-			gallery = ImageGallery() if not editMode else ImageGallery.objects.get(id=int(request.POST.get('gallery')))
+			if not editMode:
+				print 'creating new gallery'
+				gallery = ImageGallery()
+			else:
+				print 'editing gallery'
+				gallery = ImageGallery.objects.get(id=int(request.POST.get('gallery')))
 			gallery.created_by = request.user
 			gallery.title = title
 

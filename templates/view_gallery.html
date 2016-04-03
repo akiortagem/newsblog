@@ -97,6 +97,7 @@ function get_images(){
 	$.ajax({
 		url:next_link,
 		success:function(data){
+			console.log(data);
 			render_images(data);
 			render_pagination(data);
 		},

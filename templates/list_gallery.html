@@ -101,9 +101,14 @@
 </div>
 	{% else %}
 	<div class="container">
-  		<h3>Error</h3>
-  		<p>Object {{ view }} is not found</p>
+  		<h3>Ups!</h3>
+  		<p>Galeri yang anda cari tidak bisa ditemukan atau belum ada galeri di database</p>
+
+	     <a href="/blog/admin/gallery/new/" class="btn btn-info">
+         	<span class="glyphicon glyphicon-plus"></span> Create New {{ Name }}
+        </a>
 	</div>
+
 	{% endif %}
 {% endblock %}
 {% block additional_content %}

@@ -181,6 +181,7 @@ def create_gallery(request):
 			fns = request.POST.getlist('files[]')
 			title = request.POST.get('title')
 			editMode = request.POST.get('edit_mode')
+			editMode = False if editMode == 'false' else True
 			print editMode
 			if not editMode:
 				print 'creating new gallery'

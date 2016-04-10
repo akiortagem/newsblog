@@ -110,8 +110,8 @@ function get_images(){
 function get_image(queue){
 	$("#ajaxLoadingModal").show()
 	$("#modalImageContainer").hide()
-	console.log('getting image')
 	var link = '/blog/galleries/view/'+ galleryId +'/get_image/' + queue + '/'
+	console.log('getting image using ' + link)
 	$.ajax({
 		url:link,
 		success:function(data){
@@ -128,8 +128,8 @@ function render_image(queue, image){
 	$('#imageTitle').html($(this).attr('data-title'))
 	var prev_queue = parseInt(queue) - 1
 	var next_queue = parseInt(queue) + 1
-	var previous_link = '<span class="glyphicon glyphicon-chevron-left imageNextPrev" style="cursor:pointer" data-queue="'+ prev_queue +'">'
-	var next_link = '<span class="glyphicon glyphicon-chevron-right imageNextPrev" style="cursor:pointer" data-queue="'+ next_queue +'">'
+	var previous_link = '<span class="glyphicon glyphicon-chevron-left imageNextPrev" style="cursor:pointer" data-queue="'+ prev_queue +'"/>'
+	var next_link = '<span class="glyphicon glyphicon-chevron-right imageNextPrev" style="cursor:pointer" data-queue="'+ next_queue +'"/>'
 	var previous_html = (queue > 1) ? previous_link : ''
 	var next_html = (next_queue <= galleryNumImages) ? next_link : ''
 	$('#modalImageContainer').html(previous_html + '<img src="{{MEDIA_URL}}'+ image +'" style="max-width:480px;">' + next_html)

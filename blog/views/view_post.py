@@ -53,7 +53,7 @@ def endless_images(request, gallery_id):
 	model = ImageGallery
 	gallery = model.objects.get(id=gallery_id)
 	images_all = gallery.images.order_by('-date')
-	limit = 2
+	limit = 10
 	paginator = Paginator(images_all, limit)
 	page = request.GET.get('page')
 	try:

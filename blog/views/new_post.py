@@ -40,10 +40,7 @@ def save_post(request, slug=None):
 				return redirect('/blog/admin/post/new/')
 			else:
 				return redirect('/blog/admin/post/list/')
-		else:
-			return render(request, 'post_status.html', {'status':'failed'})
-	else:
-		return render(request, 'new_post.html', {'form':form_inst, 'mode':mode})
+	return render(request, 'new_post.html', {'form':form_inst, 'mode':mode})
 
 @login_required(login_url='/blog/admin/login/')
 def new_category(request):

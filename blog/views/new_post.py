@@ -37,7 +37,7 @@ def save_post(request, slug=None):
 			else:
 				formData.save()
 			if 'add-another' in request.POST:
-				return redirect('/blog/admin/post/new/'))
+				return redirect('/blog/admin/post/new/')
 			else:
 				return redirect('/blog/admin/post/list/')
 		else:

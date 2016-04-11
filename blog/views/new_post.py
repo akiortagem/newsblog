@@ -4,25 +4,46 @@ from ..forms import *
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/blog/admin/login/')
+def edit_post(request, slug):
+	return save_post(request, slug=slug)
+
+@login_required(login_url='/blog/admin/login/')
 def new_post(request):
-	if not request.user.id:
-		return render(request, '503.html')
+	return save_post(request)
+
+def save_post(request, slug=None):
 	form = BlogForm
-	form_inst = form(initial={'author':request.user.id})
+	if not slug:
+		form_inst = form(initial={'author':request.user.id})
+		mode='new'
+	else:
+		mode='edit'
+		post = Blog.objects.get(slug=slug)
+		if not post.author == request.user and not request.user.is_superuser:
+			return HttpResponse(status=403)
+		else:
+			form_inst = form(instance=post)
+
 	if request.method == 'POST':
-		formData = form(request.POST, request.FILES)
+		if not slug:
+			formData = form(request.POST, request.FILES)
+		else:
+			formData = form(request.POST, request.FILES, instance=post)
 		if formData.is_valid():
-			submitted = formData.save(commit=False)
-			submitted.author = request.user
-			submitted.save()
+			if not slug:
+				submitted = formData.save(commit=False)
+				submitted.author = request.user
+				submitted.save()
+			else:
+				formData.save()
 			if 'add-another' in request.POST:
-				return render(request, 'new_post.html', {'form':form_inst})
+				return redirect('/blog/admin/post/new/'))
 			else:
 				return redirect('/blog/admin/post/list/')
 		else:
 			return render(request, 'post_status.html', {'status':'failed'})
 	else:
-		return render(request, 'new_post.html', {'form':form_inst})
+		return render(request, 'new_post.html', {'form':form_inst, 'mode':mode})
 
 @login_required(login_url='/blog/admin/login/')
 def new_category(request):

@@ -18,6 +18,28 @@ class BlogForm(forms.ModelForm):
 		model = Blog
 		exclude = ['posted', 'author']
 
+	def clean(self):
+		cleaned_data = super(BlogForm, self).clean()
+
+		title = cleaned_data.get('title', None)
+		slug = cleaned_data.get('slug', None)
+		body = cleaned_data.get('body', None)
+
+		if not title or not slug or not body:
+			self.add_error('title', 'Anda harus memasukkan judul')
+			self.add_error('slug', 'Anda harus memasukkan slug (contoh : judul-post-anda)')
+			self.add_error('body', 'Anda harus memasukkan isi')
+
+		if self.instance.id:
+			slug_same = Blog.objects.exclude(id=self.instance.id).filter(slug=slug)
+		else:
+			slug_same = Blog.objects.filter(slug=slug)
+
+		if len(slug_same) > 0:
+			self.add_error('slug', 'Slug yang anda masukkan sudah dipakai')
+
+
+
 class BlogSearchForm(forms.Form):
 	category = forms.ModelChoiceField(Category.objects.all(), widget=forms.Select, required=False)
 	title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Judul'}), required=False)

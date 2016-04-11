@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..models import *
 from ..forms import *
 from django.contrib.auth.decorators import login_required
@@ -18,7 +18,7 @@ def new_post(request):
 			if 'add-another' in request.POST:
 				return render(request, 'new_post.html', {'form':form_inst})
 			else:
-				return render(request, 'post_status.html', {'status':'success'})
+				return redirect('/blog/admin/post/list/')
 		else:
 			return render(request, 'post_status.html', {'status':'failed'})
 	else:

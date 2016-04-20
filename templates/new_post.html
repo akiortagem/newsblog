@@ -21,7 +21,8 @@ tinyMCE.init({
 		{% for field in form %}
 			{% if field.errors %}
 				{% for error in field.errors %}
-					{{ error }}
+					<span style="color:red;">{{ error }}</span>
+					</br>
 				{% endfor %}
 			{% endif %}
 			{{ field.label }} :

@@ -21,7 +21,7 @@ tinyMCE.init({
 		{% for field in form %}
 			{% if field.errors %}
 				{% for error in field.errors %}
-					error
+					{{ error }}
 				{% endfor %}
 			{% endif %}
 			{{ field.label }} :

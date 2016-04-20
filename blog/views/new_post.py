@@ -40,6 +40,8 @@ def save_post(request, slug=None):
 				return redirect('/blog/admin/post/new/')
 			else:
 				return redirect('/blog/admin/post/list/')
+		else:
+			form_inst = formData
 	return render(request, 'new_post.html', {'form':form_inst, 'mode':mode})
 
 @login_required(login_url='/blog/admin/login/')

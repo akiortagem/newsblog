@@ -26,6 +26,7 @@ class BlogForm(forms.ModelForm):
 		body = cleaned_data.get('body', None)
 
 		if not title or not slug or not body:
+			print "in form error"
 			self.add_error('title', 'Anda harus memasukkan judul')
 			self.add_error('slug', 'Anda harus memasukkan slug (contoh : judul-post-anda)')
 			self.add_error('body', 'Anda harus memasukkan isi')
